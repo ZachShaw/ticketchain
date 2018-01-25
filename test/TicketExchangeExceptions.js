@@ -28,7 +28,7 @@ contract('TicketExchange', function(accounts) {
     });
   }),
   
-  it("should throw an exception if you try to buy an article that does not exist", function() {
+  it("should throw an exception if you try to buy an ticket that does not exist", function() {
     return TicketExchange.deployed().then(function(instance) {
       appInstance = instance;
       appInstance.sellTicket(eventId, eventName, eventDescription, web3.toWei(ticketPrice, "ether"), {
