@@ -124,7 +124,9 @@ contract('TicketExchange', (accounts) => {
       assert(buyerBalanceAfter <= buyerBalanceBefore - web3.fromWei(ticketPrice1), "seller should have earnt " + web3.fromWei(ticketPrice1) + "ETH");
 
       // To Do: Get remaining tickets still for sale count - Expected: 1
-      // return appInstance.getTicketsForSale();
+      return appInstance.getTicketsForSale();
+    }).then((data) => {
+      assert.equal(data.length, 1, "expect only one ticket to still be on sale");
     })
   })
 });

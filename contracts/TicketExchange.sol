@@ -1,4 +1,4 @@
-pragma solidity ^0.4.2;
+pragma solidity ^0.4.11;
 
 import './zeppelin/lifecycle/Killable.sol';
 
@@ -79,5 +79,34 @@ contract TicketExchange is Killable {
 
   function getNumberOfTickets() public constant returns (uint) {
     return ticketCounter;
+  }
+
+  // Get all tickets for sale returning an array of ticketIds
+  function getTicketsForSale() public constant returns (uint[]) {
+    // Check at least one ticket for sale
+    if (ticketCounter == 0) {
+      // Returns array of length zero so frontend can handle this
+      return new uint[](0);
+    }
+
+    // Prepare array for all tickets as ticketIds with new array length ticketCounter
+    uint[] memory ticketIds = new uint[](ticketCounter);
+
+    uint numberOfTicketsForSale = 0;
+
+    for (uint i = 1; i <= ticketCounter; i++) {
+      if (tickets[i].buyer == 0x0) {
+        ticketIds[numberOfTicketsForSale] = tickets[i].id;
+        numberOfTicketsForSale++;
+      }
+    }
+
+    uint[] memory ticketsForSale = new uint[](numberOfTicketsForSale);
+
+    for (uint j = 0; j < numberOfTicketsForSale; j++) {
+      ticketsForSale[j] = ticketIds[j];
+    }
+
+    return (ticketsForSale);
   }
  }
