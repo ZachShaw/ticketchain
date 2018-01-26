@@ -50,7 +50,7 @@
       "absolutePath": "/Users/zachshaw/projects/personal/ticketchain/contracts/zeppelin/lifecycle/Killable.sol",
       "exportedSymbols": {
         "Killable": [
-          286
+          154
         ]
       }
     },
@@ -64,39 +64,39 @@
             ".4"
           ]
         },
-        "id": 272,
+        "id": 140,
         "name": "PragmaDirective",
         "src": "0:23:1"
       },
       {
         "attributes": {
-          "SourceUnit": 328,
+          "SourceUnit": 196,
           "absolutePath": "/Users/zachshaw/projects/personal/ticketchain/contracts/zeppelin/ownership/Ownable.sol",
           "file": "./../ownership/Ownable.sol",
-          "scope": 287,
+          "scope": 155,
           "symbolAliases": [
             null
           ],
           "unitAlias": ""
         },
-        "id": 273,
+        "id": 141,
         "name": "ImportDirective",
         "src": "26:36:1"
       },
       {
         "attributes": {
           "contractDependencies": [
-            327
+            195
           ],
           "contractKind": "contract",
           "documentation": null,
           "fullyImplemented": true,
           "linearizedBaseContracts": [
-            286,
-            327
+            154,
+            195
           ],
           "name": "Killable",
-          "scope": 287
+          "scope": 155
         },
         "children": [
           {
@@ -110,15 +110,15 @@
                 "attributes": {
                   "contractScope": null,
                   "name": "Ownable",
-                  "referencedDeclaration": 327,
+                  "referencedDeclaration": 195,
                   "type": "contract Ownable"
                 },
-                "id": 274,
+                "id": 142,
                 "name": "UserDefinedTypeName",
                 "src": "200:7:1"
               }
             ],
-            "id": 275,
+            "id": 143,
             "name": "InheritanceSpecifier",
             "src": "200:7:1"
           },
@@ -129,7 +129,7 @@
               "isConstructor": false,
               "name": "kill",
               "payable": false,
-              "scope": 286,
+              "scope": 154,
               "stateMutability": "nonpayable",
               "superFunction": null,
               "visibility": "public"
@@ -142,7 +142,7 @@
                   ]
                 },
                 "children": [],
-                "id": 276,
+                "id": 144,
                 "name": "ParameterList",
                 "src": "225:2:1"
               },
@@ -153,7 +153,7 @@
                   ]
                 },
                 "children": [],
-                "id": 279,
+                "id": 147,
                 "name": "ParameterList",
                 "src": "245:0:1"
               },
@@ -170,16 +170,16 @@
                       "overloadedDeclarations": [
                         null
                       ],
-                      "referencedDeclaration": 308,
+                      "referencedDeclaration": 176,
                       "type": "modifier ()",
                       "value": "onlyOwner"
                     },
-                    "id": 277,
+                    "id": 145,
                     "name": "Identifier",
                     "src": "228:9:1"
                   }
                 ],
-                "id": 278,
+                "id": 146,
                 "name": "ModifierInvocation",
                 "src": "228:9:1"
               },
@@ -213,11 +213,11 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 345,
+                              "referencedDeclaration": 213,
                               "type": "function (address)",
                               "value": "selfdestruct"
                             },
-                            "id": 280,
+                            "id": 148,
                             "name": "Identifier",
                             "src": "251:12:1"
                           },
@@ -227,41 +227,41 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 290,
+                              "referencedDeclaration": 158,
                               "type": "address",
                               "value": "owner"
                             },
-                            "id": 281,
+                            "id": 149,
                             "name": "Identifier",
                             "src": "264:5:1"
                           }
                         ],
-                        "id": 282,
+                        "id": 150,
                         "name": "FunctionCall",
                         "src": "251:19:1"
                       }
                     ],
-                    "id": 283,
+                    "id": 151,
                     "name": "ExpressionStatement",
                     "src": "251:19:1"
                   }
                 ],
-                "id": 284,
+                "id": 152,
                 "name": "Block",
                 "src": "245:30:1"
               }
             ],
-            "id": 285,
+            "id": 153,
             "name": "FunctionDefinition",
             "src": "212:63:1"
           }
         ],
-        "id": 286,
+        "id": 154,
         "name": "ContractDefinition",
         "src": "179:98:1"
       }
     ],
-    "id": 287,
+    "id": 155,
     "name": "SourceUnit",
     "src": "0:278:1"
   },
@@ -273,9 +273,19 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0xf25186b5081ff5ce73482ad761db0eb0d25abfbf"
+      "address": "0xf204a4ef082f5c04bb89f7d5e6568b796096735a"
+    },
+    "1516998807951": {
+      "events": {},
+      "links": {},
+      "address": "0x289977f7ecf9dac18582705752ee9354a5e43b01"
+    },
+    "1516999367873": {
+      "events": {},
+      "links": {},
+      "address": "0x82002f103255b870c5ad9000b04dba7146fc12f3"
     }
   },
   "schemaVersion": "1.0.1",
-  "updatedAt": "2018-01-26T18:15:37.099Z"
+  "updatedAt": "2018-01-26T20:46:09.396Z"
 }

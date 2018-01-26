@@ -3,8 +3,8 @@ let TicketExchange = artifacts.require("./TicketExchange.sol");
 
 contract('TicketExchange', (accounts) => {
   let appInstance;
-  let seller = accounts[4];
-  let buyer = accounts[5];
+  let seller = accounts[2];
+  let buyer = accounts[1];
   let ticketId1 = 1;
   let ticketId2 = 2;
   let eventId1 = 'EV001';

@@ -28,7 +28,8 @@ contract Authentication is Killable {
   function login() constant
   public
   onlyExistingUser
-  returns (bytes32) {
+  returns (bytes32) 
+  {
     return (users[msg.sender].name);
   }
 
@@ -36,14 +37,14 @@ contract Authentication is Killable {
   public
   payable
   onlyValidName(name)
-  returns (bytes32) {
+  returns (bytes32) 
+  {
     // Check if user exists.
     // If yes, return user name.
     // If no, check if name was sent.
     // If yes, create and return user.
 
-    if (users[msg.sender].name == 0x0)
-    {
+    if (users[msg.sender].name == 0x0) {
         users[msg.sender].name = name;
 
         return (users[msg.sender].name);
@@ -57,11 +58,11 @@ contract Authentication is Killable {
   payable
   onlyValidName(name)
   onlyExistingUser
-  returns (bytes32) {
+  returns (bytes32) 
+  {
     // Update user name.
 
-    if (users[msg.sender].name != 0x0)
-    {
+    if (users[msg.sender].name != 0x0) {
         users[msg.sender].name = name;
 
         return (users[msg.sender].name);
