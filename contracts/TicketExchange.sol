@@ -101,12 +101,13 @@ contract TicketExchange is Killable {
       }
     }
 
+    // Create new array just for tickets that have not been sold yet
     uint[] memory ticketsForSale = new uint[](numberOfTicketsForSale);
 
     for (uint j = 0; j < numberOfTicketsForSale; j++) {
       ticketsForSale[j] = ticketIds[j];
     }
-
+    
     return (ticketsForSale);
   }
  }
