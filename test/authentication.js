@@ -1,15 +1,16 @@
-var Authentication = artifacts.require("./Authentication.sol");
+/* eslint-disable */
+let Authentication = artifacts.require("./Authentication.sol");
 
-contract('Authentication', function(accounts) {
+contract('Authentication', (accounts) => {
 
-  it("...should sign up and log in a user.", function() {
-    return Authentication.deployed().then(function(instance) {
+  it("...should sign up and log in a user.", () => {
+    return Authentication.deployed().then((instance) => {
       authenticationInstance = instance;
 
       return authenticationInstance.signup('testuser', {from: accounts[0]});
-    }).then(function() {
+    }).then(() => {
       return authenticationInstance.login.call();
-    }).then(function(userName) {
+    }).then((userName) => {
       assert.equal(web3.toUtf8(userName), 'testuser', "The user was not signed up.");
     });
   });

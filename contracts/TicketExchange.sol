@@ -22,7 +22,7 @@ contract TicketExchange is Killable {
     uint indexed _id,
     address indexed _seller,
     string _eventName,
-    uint256 price
+    uint256 _price
   );
 
   event BuyTicketEvent (

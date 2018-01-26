@@ -1,49 +1,49 @@
-var TicketExchange = artifacts.require("./TicketExchange.sol");
+/* eslint-disable */
+let TicketExchange = artifacts.require("./TicketExchange.sol");
 
-contract('TicketExchange', function(accounts) {
-  var appInstance;
-  var seller = accounts[1];
-  var buyer = accounts[2];
-  var ticketId = 1;
-  var eventId = 'EV001';
-  var eventName = 'Dimensions Festival 2018';
-  var eventDescription = 'Underground music festival in abandoned Roman fort';
-  var ticketPrice = 0.5;
-  var weiPrice = web3.toWei(ticketPrice, "ether");
+contract('TicketExchange', (accounts) => {
+  let appInstance;
+  let seller = accounts[1];
+  let buyer = accounts[2];
+  let ticketId = 1;
+  let eventId = 'EV001';
+  let eventName = 'Dimensions Festival 2018';
+  let eventDescription = 'Underground music festival in abandoned Roman fort';
+  let ticketPrice = 0.5;
+  let weiPrice = web3.toWei(ticketPrice, "ether");
 
-  it("should throw an exception if you try to buy a ticket when none are for sale", function() {
-    return TicketExchange.deployed().then(function(instance) {
+  it("should throw an exception if you try to buy a ticket when none are for sale", () => {
+    return TicketExchange.deployed().then((instance) => {
       appInstance = instance;
       return appInstance.buyTicket(ticketId, {
         from: buyer,
         value: weiPrice
       });
     }).then(assert.fail)
-    .catch(function(error) {
-    }).then(function() {
+    .catch((error) => {
+    }).then(() => {
       return appInstance.getNumberOfTickets();
-    }).then(function(data) {
+    }).then((data) => {
       assert.equal(data.toNumber(), 0, "number of tickets must be 0");
     });
   }),
   
-  it("should throw an exception if you try to buy an ticket that does not exist", function() {
-    return TicketExchange.deployed().then(function(instance) {
+  it("should throw an exception if you try to buy an ticket that does not exist", () => {
+    return TicketExchange.deployed().then((instance) => {
       appInstance = instance;
       appInstance.sellTicket(eventId, eventName, eventDescription, weiPrice, {
         from: seller
       });
-    }).then(function(receipt) {
+    }).then((receipt) => {
       return appInstance.buyTicket(2, {
         from: buyer,
         value: weiPrice
       });
     }).then(assert.fail)
-    .catch(function(error) {
-
-    }).then(function(data) {
+    .catch((error) => {
+    }).then((data) => {
       return appInstance.tickets(ticketId);
-    }).then(function(data) {
+    }).then((data) => {
 
       assert.equal(data[0].toNumber(), ticketId, "ticketId must be equal to " + ticketId);
       assert.equal(data[1], seller, "seller must be equal to " + seller);
@@ -54,23 +54,23 @@ contract('TicketExchange', function(accounts) {
       assert.equal(data[6].toNumber(), weiPrice, "ticket price must be equal to " + weiPrice);
 
       return appInstance.getNumberOfTickets();
-    }).then(function(data) {
+    }).then((data) => {
       assert.equal(data.toNumber(), 1, "one event should be listed");
     })
   }),
 
-  it("should throw an exception if the same user trys to buy their own ticket", function() {
-    return TicketExchange.deployed().then(function(instance) {
+  it("should throw an exception if the same user trys to buy their own ticket", () => {
+    return TicketExchange.deployed().then((instance) => {
       appInstance = instance;
       return appInstance.buyTicket(ticketId, {
         from: seller,
         value: weiPrice
       });
     }).then(assert.fail)
-    .catch(function(error) {
-    }).then(function() {
+    .catch((error) => {
+    }).then(() => {
       return appInstance.tickets(ticketId)
-    }).then(function(data) {
+    }).then((data) => {
 
       assert.equal(data[0].toNumber(), ticketId, "ticketID must be equal to " + ticketId);
       assert.equal(data[1], seller, "seller must be equal to +", seller);
@@ -81,13 +81,13 @@ contract('TicketExchange', function(accounts) {
       assert.equal(data[6].toNumber(), weiPrice, "ticket price must be equal to " + weiPrice);
 
       return appInstance.getNumberOfTickets();
-    }).then(function(data) {
+    }).then((data) => {
       assert.equal(data.toNumber(), 1, "one event should still be listed");
     })
   }),
 
-  it("should throw an exception if the ticket is purchased with the incorrect price", function() {
-    return TicketExchange.deployed().then(function(instance) {
+  it("should throw an exception if the ticket is purchased with the incorrect price", () => {
+    return TicketExchange.deployed().then((instance) => {
       appInstance = instance;
 
       return appInstance.buyTicket(ticketId, {
@@ -95,10 +95,10 @@ contract('TicketExchange', function(accounts) {
         value: web3.toWei(ticketPrice + 1, "ether")
       });
     }).then(assert.fail)
-    .catch(function(error) {
-    }).then(function() {
+    .catch((error) => {
+    }).then(() => {
       return appInstance.tickets(ticketId)
-    }).then(function(data) {
+    }).then((data) => {
       
       assert.equal(data[0].toNumber(), ticketId, "ticketID must be equal to " + ticketId);
       assert.equal(data[1], seller, "seller must be equal to +", seller);
@@ -109,29 +109,29 @@ contract('TicketExchange', function(accounts) {
       assert.equal(data[6].toNumber(), weiPrice, "ticket price must be equal to " + weiPrice);
 
       return appInstance.getNumberOfTickets();
-    }).then(function(data) {
+    }).then((data) => {
       assert.equal(data.toNumber(), 1, "one event should still be listed");
     });
   }),
 
-  it("should throw and exception if the ticket has already been bought by another user", function() {
-    return TicketExchange.deployed().then(function(instance) {
+  it("should throw and exception if the ticket has already been bought by another user", () => {
+    return TicketExchange.deployed().then((instance) => {
       appInstance = instance;
 
       return appInstance.buyTicket(ticketId, {
         from: buyer,
         value: weiPrice
       });
-    }).then(function() {
+    }).then(() => {
       return appInstance.buyTicket(ticketId, {
         from: web3.eth.accounts[0],
         value: weiPrice
       })
     }).then(assert.fail)
-    .catch(function(error) {
-    }).then(function() {
+    .catch((error) => {
+    }).then(() => {
       return appInstance.tickets(ticketId)
-    }).then(function(data) {
+    }).then((data) => {
       
       assert.equal(data[0].toNumber(), ticketId, "expect tickedId to equal " + ticketId);
       assert.equal(data[1], seller, "expect seller to equal " + seller);
@@ -142,7 +142,7 @@ contract('TicketExchange', function(accounts) {
       assert.equal(data[6], weiPrice, "expect price to be equal to " + weiPrice);
 
       return appInstance.getNumberOfTickets();
-    }).then(function(data) {
+    }).then((data) => {
       assert.equal(data.toNumber(), 1, "one event should still be listed");
     });
   });
