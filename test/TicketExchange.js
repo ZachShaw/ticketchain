@@ -11,8 +11,8 @@ contract('TicketExchange', (accounts) => {
   let eventId2 = 'EV002';
   let eventName1 = 'Willers Brothers Live';
   let eventName2 = 'Lauren Lo Sung Presents..'
-  let eventDescription1 = 'Minimal duo curating live beats all night long';
-  let eventDescription2 = 'Lauren headlining amongst her favourite artists';
+  let eventLocation1 = 'Village Underground, East London, EC1';
+  let eventLocation2 = '93 Feet East, Hackney Wick, E14';
   let ticketPrice1 = web3.toWei(5, "ether");
   let ticketPrice2 = web3.toWei(10, "ether");
   let buyerBalanceBefore, buyerBalanceAfter;
@@ -32,7 +32,7 @@ contract('TicketExchange', (accounts) => {
     return TicketExchange.deployed().then((instance) => {
       appInstance = instance
 
-      return appInstance.sellTicket(eventId1, eventName1, eventDescription1, ticketPrice1, {
+      return appInstance.sellTicket(eventId1, eventName1, eventLocation1, ticketPrice1, {
         from: seller
       }).then((receipt) => {
         // Check event
@@ -56,7 +56,7 @@ contract('TicketExchange', (accounts) => {
         assert.equal(data[2], 0x0, "expect there to be no buyer yet " + 0x0);
         assert.equal(data[3], eventId1, "expect the eventId to equal " + eventId1);
         assert.equal(data[4], eventName1, "expect the eventName to equal " + eventName1);
-        assert.equal(data[5], eventDescription1, "expect the eventDescription to equal " + eventDescription1);
+        assert.equal(data[5], eventLocation1, "expect the eventLocation to equal " + eventLocation1);
         assert.equal(data[6].toNumber(), ticketPrice1, "expect the eventPrice to equal " + ticketPrice1);
       })
     })
@@ -66,7 +66,7 @@ contract('TicketExchange', (accounts) => {
     return TicketExchange.deployed().then((instance) => {
       appInstance = instance
 
-      return appInstance.sellTicket(eventId2, eventName2, eventDescription2, ticketPrice2, {
+      return appInstance.sellTicket(eventId2, eventName2, eventLocation2, ticketPrice2, {
         from: seller
       }).then((receipt) => {
         // Check event
@@ -87,7 +87,7 @@ contract('TicketExchange', (accounts) => {
         assert.equal(data[2], 0x0, "expect there to be no buyer yet " + 0x0);
         assert.equal(data[3], eventId2, "expect the eventId to equal " + eventId2);
         assert.equal(data[4], eventName2, "expect the eventName to equal " + eventName2);
-        assert.equal(data[5], eventDescription2, "expect the eventDescription to equal " + eventDescription2);
+        assert.equal(data[5], eventLocation2, "expect the eventLocation to equal " + eventLocation2);
         assert.equal(data[6].toNumber(), ticketPrice2, "expect the eventPrice to equal " + ticketPrice2 + "ETH");
       })
     })

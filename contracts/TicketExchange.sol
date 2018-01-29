@@ -9,7 +9,7 @@ contract TicketExchange is Killable {
     address buyer;
     string eventId;
     string eventName;
-    string eventDescription;
+    string location;
     uint256 price;
   }
 
@@ -33,7 +33,7 @@ contract TicketExchange is Killable {
     uint256 _price
   );
 
-  function sellTicket(string _eventId, string _eventName, string _eventDescription, uint _price) public {
+  function sellTicket(string _eventId, string _eventName, string _location, uint _price) public {
     // New ticket
     ticketCounter++;
 
@@ -44,7 +44,7 @@ contract TicketExchange is Killable {
       0x0,
       _eventId,
       _eventName,
-      _eventDescription,
+      _location,
       _price
     );
 

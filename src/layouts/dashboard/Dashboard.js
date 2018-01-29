@@ -7,7 +7,7 @@ class Dashboard extends Component {
   }
 
   render() {
-    const {authData } = this.props;
+    const { authData } = this.props;
 
     return(
       <main className="container">
