@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import SellTicketFormContainer from '../ui/sellTicketForm/SellTicketFormContainer';
+import TicketListContainer from '../ui/ticketList/TicketListContainer'
 
 class Tickets extends Component {
   constructor(props, { authData }) {
@@ -8,7 +9,6 @@ class Tickets extends Component {
   }
 
   render() {
-    const { authData } = this.props;
 
     return(
       <main className="container">
@@ -17,6 +17,8 @@ class Tickets extends Component {
             <h1>Tickets</h1>
             <br/>
             <SellTicketFormContainer/>
+            <br/>
+            <TicketListContainer/>
           </div>
         </div>
       </main>
