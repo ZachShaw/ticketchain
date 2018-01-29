@@ -38,6 +38,7 @@ class SellTicketForm extends Component {
   render() {
     return (
       <form className="pure-form pure-form-stacked" onSubmit={this.handleSubmit}>
+        <h3>Sell</h3>
         <fieldset>
           <label>
             <label htmlFor="name">Event</label>
