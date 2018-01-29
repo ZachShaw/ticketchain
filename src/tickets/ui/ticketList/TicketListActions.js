@@ -76,6 +76,8 @@ export function buyTicket(ticketId, price) {
 
           return ticketExchangeInstance.buyTicket(ticketId, {
             from: coinbase,
+            value: web3.toWei(price, "ether"),
+            gas: 500000
           })
         })
       }).then(() => {
