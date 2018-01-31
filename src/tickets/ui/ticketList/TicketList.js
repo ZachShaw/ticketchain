@@ -28,7 +28,7 @@ class TicketList extends Component {
           <h3>{ticket.eventName}</h3>
           <p>{ticket.seller}</p>
           <p>{ticket.location}</p>
-          <p>{ticket.price}ETH</p>
+          <h4>Ξ{ticket.price}</h4>
           <button 
             className="pure-button pure-button-primary" 
             onClick={() => onBuyTicket(ticket.ticketId, ticket.price)}
