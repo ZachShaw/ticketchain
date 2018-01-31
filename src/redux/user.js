@@ -33,10 +33,11 @@ export function loginUser() {
             return browserHistory.push('/signup')
           })
           .then((result) => {
-            var userName = web3.toUtf8(result[0]);
+            var name = web3.toUtf8(result[0]);
             var email = web3.toUtf8(result[1]);
+            var username = web3.toUtf8(result[2]);
 
-            dispatch(loginActions.success({"name": userName, "email": email}))
+            dispatch(loginActions.success({name, email, username}))
 
             var currentLocation = browserHistory.getCurrentLocation()
 

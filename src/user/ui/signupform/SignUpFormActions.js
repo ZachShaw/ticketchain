@@ -1,5 +1,5 @@
 import AuthenticationContract from '../../../../build/contracts/Authentication.json'
-import { loginUser } from '../loginbutton/LoginButtonActions'
+import { loginUser } from '../../../redux/user.js'
 import store from '../../../store'
 
 const contract = require('truffle-contract')

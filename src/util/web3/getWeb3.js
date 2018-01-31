@@ -7,14 +7,6 @@ import { fetchActions } from '../../redux/utils.js';
 export const WEB3_INITIALIZED = 'ticketchain/web3/web3initialized';
 const web3Actions = fetchActions(WEB3_INITIALIZED);
 
-// export const WEB3_INITIALIZED = 'WEB3_INITIALIZED'
-// function web3Initialized(results) {
-//   return {
-//     type: WEB3_INITIALIZED,
-//     payload: results
-//   }
-// }
-
 let getWeb3 = new Promise(function(resolve, reject) {
   // Wait for loading completion to avoid race conditions with web3 injection timing.
   window.addEventListener('load', (dispatch) => {
@@ -32,7 +24,6 @@ let getWeb3 = new Promise(function(resolve, reject) {
 
       console.log('Injected web3 detected.');
 
-      // resolve(store.dispatch(web3Initialized(results)))
       resolve(store.dispatch(web3Actions.success(results)))
     } else {
 
@@ -48,7 +39,6 @@ let getWeb3 = new Promise(function(resolve, reject) {
 
       console.log('No web3 instance injected, using Local web3.');
 
-      // resolve(store.dispatch(web3Initialized(results)))
       resolve(store.dispatch(web3Actions.success(results)))
 
     }
