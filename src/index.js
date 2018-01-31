@@ -5,6 +5,7 @@ import { Provider } from 'react-redux'
 import { syncHistoryWithStore } from 'react-router-redux'
 import { UserIsAuthenticated, UserIsNotAuthenticated } from './util/wrappers.js'
 import getWeb3 from './util/web3/getWeb3'
+import { persistStore } from 'redux-persist';
 
 // Layouts
 import App from './App'
@@ -29,7 +30,10 @@ getWeb3
   console.log('Error in web3 initialization.')
 })
 
-ReactDOM.render((
+persistStore(store, {
+  whitelist: ['user']
+}, () => {
+  ReactDOM.render((
     <Provider store={store}>
       <Router history={history}>
         <Route path="/" component={App}>
@@ -43,4 +47,5 @@ ReactDOM.render((
     </Provider>
   ),
   document.getElementById('root')
-)
+  )
+});
