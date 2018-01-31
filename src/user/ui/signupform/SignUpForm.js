@@ -31,7 +31,7 @@ class SignUpForm extends Component {
       return alert('Please fill in your email.')
     }
     
-    this.props.onSignUpFormSubmit(name, email, username)
+    this.props.onSignUpUser(name, email, username)
   }
 
   render() {

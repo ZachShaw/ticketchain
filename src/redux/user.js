@@ -53,6 +53,38 @@ export function loginUser() {
   }
 }
 
+export function signUpUser(name, email, username) {
+  let web3 = store.getState().web3.web3Instance
+
+  if (typeof web3 !== 'undefined') {
+
+    return (dispatch) => {
+      const authentication = contract(AuthenticationContract)
+      authentication.setProvider(web3.currentProvider)
+
+      var authenticationInstance
+
+      web3.eth.getCoinbase((error, coinbase) => {
+        if (error) {
+          console.error(error);
+        }
+
+        authentication.deployed().then((instance) => {
+          authenticationInstance = instance
+          authenticationInstance.signup(name, email, username, {from: coinbase})
+          .then((result) => {
+            return dispatch(loginUser())
+          })
+          .catch((result) => {
+          })
+        })
+      })
+    }
+  } else {
+    console.error('Web3 is not initialized.');
+  }
+}
+
 export function logout () {
   return createAction(LOGOUT)();
 }
