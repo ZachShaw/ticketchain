@@ -2,7 +2,7 @@ import { handleActions, createAction } from 'redux-actions';
 import { fetchActions, fetchSuccess } from './utils.js';
 import { browserHistory } from 'react-router'
 import store from '../store'
-import AuthenticationContract from '../../../../build/contracts/Authentication.json'
+import AuthenticationContract from '../../build/contracts/Authentication.json'
 
 const contract = require('truffle-contract')
 
@@ -56,7 +56,7 @@ export function logout () {
   return createAction(LOGOUT)();
 }
 
-const initialState = { data: false };
+const initialState = { data: null };
 
 export default handleActions({
   [fetchSuccess(LOGIN)]: (state, action) => {
