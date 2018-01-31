@@ -6,6 +6,7 @@ contract Authentication is Killable {
   struct User {
     bytes32 name;
     bytes32 email;
+    bytes32 username;
   }
 
   mapping (address => User) private users;
@@ -31,14 +32,15 @@ contract Authentication is Killable {
   onlyExistingUser
   returns (bytes32[]) 
   {
-    bytes32[] memory user = new bytes32[](2);
+    bytes32[] memory user = new bytes32[](3);
     user[0] = users[msg.sender].name;
     user[1] = users[msg.sender].email;
+    user[2] = users[msg.sender].username;
 
     return (user);
   }
 
-  function signup(bytes32 name, bytes32 email)
+  function signup(bytes32 name, bytes32 email, bytes32 username)
   public
   payable
   onlyValidName(name)
@@ -52,6 +54,7 @@ contract Authentication is Killable {
     if (users[msg.sender].name == 0x0) {
         users[msg.sender].name = name;
         users[msg.sender].email = email;
+        users[msg.sender].username = username;
 
         return (users[msg.sender].name);
     }
@@ -59,19 +62,37 @@ contract Authentication is Killable {
     return (users[msg.sender].name);
   }
 
-  function update(bytes32 name)
+  function update(bytes32 name, bytes32 email, bytes32 username)
   public
   payable
   onlyValidName(name)
   onlyExistingUser
   returns (bytes32) 
   {
-    // Update user name.
+    // Update user details.
 
     if (users[msg.sender].name != 0x0) {
         users[msg.sender].name = name;
+        users[msg.sender].email = email;
+        users[msg.sender].username = username;
 
         return (users[msg.sender].name);
+    }
+  }
+
+  function getUser(address _address)
+  constant 
+  public 
+  returns (bytes32[])
+  {
+    // Only proceed if address is sent
+    if (_address != 0x0) {
+      bytes32[] memory user = new bytes32[](3);
+      user[0] = users[_address].name;
+      user[1] = users[_address].email;
+      user[2] = users[_address].username;
+
+      return (user);
     }
   }
 }

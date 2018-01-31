@@ -7,6 +7,7 @@ class SignUpForm extends Component {
     this.state = {
       name: '',
       email: '',
+      username: '',
     }
 
     this.onChangeField = this.onChangeField.bind(this);
@@ -15,7 +16,7 @@ class SignUpForm extends Component {
   onChangeField = (fieldName) => (e) => this.setState({[fieldName]: e.target.value});
 
   handleSubmit(event) {
-    const { name, email } = this.state;
+    const { name, email, username } = this.state;
     event.preventDefault()
 
     if (name.length < 2) {
@@ -26,7 +27,11 @@ class SignUpForm extends Component {
       return alert('Please fill in your email.')
     }
 
-    this.props.onSignUpFormSubmit(name, email)
+    if (username.length < 2) {
+      return alert('Please fill in your email.')
+    }
+    
+    this.props.onSignUpFormSubmit(name, email, username)
   }
 
   render() {
@@ -36,7 +41,9 @@ class SignUpForm extends Component {
           <label htmlFor="name">Name</label>
           <input id="name" type="text" value={this.state.name} onChange={this.onChangeField('name')} placeholder="Name" />
           <span className="pure-form-message">This is a required field.</span>
-          <input id="name" type="text" value={this.state.email} onChange={this.onChangeField('email')} placeholder="Email" />
+          <input id="email" type="text" value={this.state.email} onChange={this.onChangeField('email')} placeholder="Email" />
+          <span className="pure-form-message">This is a required field.</span>
+          <input id="username" type="text" value={this.state.username} onChange={this.onChangeField('username')} placeholder="Username" />
           <span className="pure-form-message">This is a required field.</span>
 
           <br />

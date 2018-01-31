@@ -5,15 +5,39 @@ class TicketList extends Component {
     super(props);
 
     this.state = {}
+    this.createTicketListings = this.createTicketListings.bind(this);
   }
 
   componentDidMount() {
     this.props.onFetchTickets();
   }
 
+  createTicketListings() {
+    const { tickets, onBuyTicket } = this.props;
+
+    return tickets.map((ticket) => {
+
+      return (
+        <li key={ticket.ticketId}>
+          <p>{ticket.seller}</p>
+          <p>{ticket.eventId}</p>
+          <p>{ticket.eventName}</p>
+          <p>{ticket.location}</p>
+          <p>{ticket.price}ETH</p>
+          <button 
+            className="pure-button pure-button-primary" 
+            onClick={() => onBuyTicket(ticket.ticketId, ticket.price)}
+          >
+            Buy Ticket
+          </button>
+        </li>
+      );
+    })
+  }
+
   render() {
 
-    const { tickets, onBuyTicket } = this.props;
+    const { tickets } = this.props;
 
     if (!tickets) return null;
 
@@ -21,25 +45,7 @@ class TicketList extends Component {
       <div className="">
         <h3>Available Tickets</h3>
         <ul>
-          {tickets && tickets.map((ticket) => {
-            return (
-              <li key={ticket.ticketId}>
-                <p>{ticket.ticketId}</p>
-                <p>{ticket.seller}</p>
-                <p>{ticket.buyer}</p>
-                <p>{ticket.eventId}</p>
-                <p>{ticket.eventName}</p>
-                <p>{ticket.location}</p>
-                <p>{ticket.price}ETH</p>
-                <button 
-                  className="pure-button pure-button-primary" 
-                  onClick={() => onBuyTicket(ticket.ticketId, ticket.price)}
-                >
-                  Buy Ticket
-                </button>
-              </li>
-            );
-          })}
+          {this.createTicketListings()}
         </ul>
       </div>
     )

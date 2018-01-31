@@ -8,16 +8,18 @@ contract TestAuthentication {
 
   function testUserCanSignUpAndLogin() public {
     Authentication authentication = Authentication(DeployedAddresses.Authentication());
-    bytes32 name = "testuser";
-    bytes32 email = "test@gmail.com";
-    bytes32[] memory user = new bytes32[](2);
+    bytes32 name = "Zach Shaw";
+    bytes32 email = "zach@gmail.com";
+    bytes32 username = "zshaw";
+    bytes32[] memory user = new bytes32[](3);
 
     user[0] = name;
     user[1] = email;
+    user[2] = username;
 
-    authentication.signup(name, email);
+    authentication.signup(name, email, username);
 
-    Assert.equal(authentication.signup(name, email), user[0], "it should signup and return name");
+    Assert.equal(authentication.signup(name, email, username), user[0], "it should signup and return name");
 
     // login = authentication.login();
 
