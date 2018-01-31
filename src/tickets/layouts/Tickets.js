@@ -15,7 +15,6 @@ class Tickets extends Component {
         <div className="pure-g">
           <div className="pure-u-1-1">
             <h1>Tickets</h1>
-            <br/>
             <SellTicketFormContainer/>
             <br/>
             <TicketListContainer/>
