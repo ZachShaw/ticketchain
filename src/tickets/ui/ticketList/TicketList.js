@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './TicketList.css';
 
 class TicketList extends Component {
   constructor(props) {
@@ -18,10 +19,14 @@ class TicketList extends Component {
     return tickets.map((ticket) => {
 
       return (
-        <li key={ticket.ticketId}>
+        <li key={ticket.ticketId} className="ticketlist--item">
+          <img 
+            alt="event-img" 
+            src="https://cdn.ticketswap.com/public/201801/c6ac4a58-b883-4295-9cf5-d35a4e5731d2.jpeg" 
+            className="ticketlist--img"
+          />
+          <h3>{ticket.eventName}</h3>
           <p>{ticket.seller}</p>
-          <p>{ticket.eventId}</p>
-          <p>{ticket.eventName}</p>
           <p>{ticket.location}</p>
           <p>{ticket.price}ETH</p>
           <button 
@@ -44,7 +49,7 @@ class TicketList extends Component {
     return (
       <div className="">
         <h3>Available Tickets</h3>
-        <ul>
+        <ul className="ticketlist--container">
           {this.createTicketListings()}
         </ul>
       </div>

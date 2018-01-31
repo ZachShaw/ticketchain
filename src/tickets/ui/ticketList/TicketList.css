@@ -1,0 +1,19 @@
+.ticketlist--container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  padding: 0;
+}
+
+.ticketlist--item {
+  list-style: none;
+  width: 400px;
+  margin-right: 10px;
+}
+
+.ticketlist--img {
+  width: 100%;
+  height: auto;
+  border: 1px solid grey;
+}
