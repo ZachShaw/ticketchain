@@ -4,16 +4,9 @@ import './TicketList.css';
 class TicketList extends Component {
   constructor(props) {
     super(props);
-
+    
     this.state = {}
     this.createTicketListings = this.createTicketListings.bind(this);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { web3loading, onFetchTickets, tickets } = this.props;
-    if (web3loading !== nextProps.web3loading || !tickets) {
-      onFetchTickets();
-    }
   }
 
   createTicketListings() {
