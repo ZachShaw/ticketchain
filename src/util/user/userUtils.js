@@ -3,7 +3,7 @@ import store from '../../store'
 
 const contract = require('truffle-contract')
 
-export function getUser(address) {
+export function fetchUser(address) {
   let web3 = store.getState().web3.web3Instance
   
   if (typeof web3 !== 'undefined') {

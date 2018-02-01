@@ -17,3 +17,11 @@
   height: auto;
   border: 1px solid grey;
 }
+
+.ticketlist--seller {
+  margin-bottom: 0;
+}
+
+.ticketlist--wallet {
+  margin: 0;
+}

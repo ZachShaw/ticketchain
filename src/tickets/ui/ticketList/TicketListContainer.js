@@ -9,7 +9,8 @@ const mapStateToProps = (state) => {
 
   return {
       web3loading, 
-      tickets: state.ticket.data
+      tickets: state.ticket.data,
+      user: state.user.data,
   };
 };
 

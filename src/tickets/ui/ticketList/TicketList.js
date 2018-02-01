@@ -17,10 +17,9 @@ class TicketList extends Component {
   }
 
   createTicketListings() {
-    const { tickets, onBuyTicket } = this.props;
+    const { tickets, onBuyTicket, user } = this.props;
 
     return tickets.map((ticket) => {
-
       return (
         <li key={ticket.ticketId} className="ticketlist--item">
           <img 
@@ -29,15 +28,18 @@ class TicketList extends Component {
             className="ticketlist--img"
           />
           <h3>{ticket.eventName}</h3>
-          <p>{ticket.seller}</p>
+          <h4 className="ticketlist--seller">{ticket.user.username}</h4>
+          <h5 className="ticketlist--wallet">{ticket.seller}</h5>
           <p>{ticket.location}</p>
           <h4>Ξ{ticket.price}</h4>
-          <button 
+          {ticket.user.username !== user.username ? <button 
             className="pure-button pure-button-primary" 
             onClick={() => onBuyTicket(ticket.ticketId, ticket.price)}
           >
             Buy Ticket
-          </button>
+          </button> : <h4>
+            Your Listing
+          </h4>}
         </li>
       );
     })

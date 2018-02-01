@@ -9,8 +9,8 @@ const contract = require('truffle-contract')
 export const LOGIN = 'ticketchain/login/login';
 const loginActions = fetchActions(LOGIN);
 export const LOGOUT = 'ticketchain/login/logout';
-export const FETCH_USER = 'ticketchain/user/fetch_user';
-const fetchUserActions = fetchActions(FETCH_USER);
+// export const FETCH_USER = 'ticketchain/user/fetch_user';
+// const fetchUserActions = fetchActions(FETCH_USER);
 
 export function loginUser() {
   let web3 = store.getState().web3.web3Instance
@@ -87,40 +87,40 @@ export function signUpUser(name, email, username) {
   }
 }
 
-export function fetchUser(address) {
-  let web3 = store.getState().web3.web3Instance
+// export function fetchUser(address) {
+//   let web3 = store.getState().web3.web3Instance
 
-  if (typeof web3 !== 'undefined') {
-    return (dispatch) => {
-      dispatch(fetchUserActions.started());
-      const authentication = contract(AuthenticationContract)
-      authentication.setProvider(web3.currentProvider)
-      var authenticationInstance
+//   if (typeof web3 !== 'undefined') {
+//     return (dispatch) => {
+//       dispatch(fetchUserActions.started());
+//       const authentication = contract(AuthenticationContract)
+//       authentication.setProvider(web3.currentProvider)
+//       var authenticationInstance
 
-      authentication.deployed().then((instance) => {
-        authenticationInstance = instance;
+//       authentication.deployed().then((instance) => {
+//         authenticationInstance = instance;
 
-        return authenticationInstance.getUser(address);
-      }).then((user) => {
-        const utfUser = {
-          address,
-          name: web3.toUtf8(user[0]),
-          email: web3.toUtf8(user[1]),
-          username: web3.toUtf8(user[2]),
-        }
-        dispatch(fetchUserActions.success(utfUser))
-      }).catch((error) => {
-        console.log(error)
-      })
-    }
-  }
-}
+//         return authenticationInstance.getUser(address);
+//       }).then((user) => {
+//         const utfUser = {
+//           address,
+//           name: web3.toUtf8(user[0]),
+//           email: web3.toUtf8(user[1]),
+//           username: web3.toUtf8(user[2]),
+//         }
+//         dispatch(fetchUserActions.success(utfUser))
+//       }).catch((error) => {
+//         console.log(error)
+//       })
+//     }
+//   }
+// }
 
 export function logout () {
   return createAction(LOGOUT)();
 }
 
-const initialState = { data: null, users: [] };
+const initialState = { data: null, fetchedUsers: [] };
 
 export default handleActions({
   [fetchSuccess(LOGIN)]: (state, action) => {
@@ -129,16 +129,17 @@ export default handleActions({
           data: action.payload
       };
   },
-  [fetchSuccess(FETCH_USER)]: (state, action) => {
-    const { users } = state;
-    if (!users.includes(action.payload)) {
-      users.push(action.payload);
-    }
+  // [fetchSuccess(FETCH_USER)]: (state, action) => {
+  //   const { fetchedUsers } = state;
+  //   const index = fetchedUsers.findIndex(user => user.address === action.payload.address);
+  //   if (index < 0) {
+  //     fetchedUsers.push(action.payload);
+  //   }
     
-    return {
-        ...state,
-        users
-    };
-  },
+  //   return {
+  //       ...state,
+  //       fetchedUsers
+  //   };
+  // },
   [LOGOUT]: () => initialState
 }, initialState);
