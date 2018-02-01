@@ -60,7 +60,8 @@
     "redux-auth-wrapper": "^1.0.0",
     "redux-logger": "^3.0.6",
     "redux-persist": "^4.10.2",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "web3": "github:ethereum/web3.js"
   },
   "scripts": {
     "start": "node scripts/start.js",

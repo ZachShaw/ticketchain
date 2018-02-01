@@ -32,7 +32,7 @@ class SellTicketForm extends Component {
       return alert('Please enter a price greather than zero.')
     }
 
-    this.props.onSellTicketSubmit(eventName, location, price)
+    this.props.onSellTicket(eventName, location, price)
   }
 
   render() {
