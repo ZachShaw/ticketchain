@@ -1,12 +1,16 @@
 import { connect } from 'react-redux';
 import TicketList from './TicketList';
-import { fetchTickets, buyTicket } from '../../../redux/ticket.js'
+import { fetchTickets, buyTicket } from '../../../redux/ticket.js';
+import { WEB3_INITIALIZED } from '../../../redux/web3';
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
+  let web3loading = state.network.loading[WEB3_INITIALIZED];
+
   return {
-    tickets: state.ticket.data
-  }
-}
+      web3loading, 
+      tickets: state.ticket.data
+  };
+};
 
 const mapDispatchToProps = (dispatch) => ({
   onFetchTickets: () => dispatch(fetchTickets()),

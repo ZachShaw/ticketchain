@@ -8,7 +8,7 @@ export const WEB3_INITIALIZED = 'ticketchain/web3/web3initialized';
 const web3Actions = fetchActions(WEB3_INITIALIZED);
 
 let getWeb3 = new Promise(function(resolve, reject) {
-  console.log('FIRING FROM GET WEB3')
+  store.dispatch(web3Actions.started())
   // Wait for loading completion to avoid race conditions with web3 injection timing.
   window.addEventListener('load', (dispatch) => {
     var results

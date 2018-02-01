@@ -4,13 +4,8 @@ import store from '../store'
 import TicketExchangeContract from '../../build/contracts/TicketExchange.json'
 
 const contract = require('truffle-contract')
-
-// export const SELL_TICKET = 'ticketchain/ticket/sell-ticket';
-// const sellTicketActions = fetchActions(SELL_TICKET);
 export const FETCH_TICKETS = 'ticketchain/ticket/fetch-tickets';
 const fetchTicketActions = fetchActions(FETCH_TICKETS);
-// export const BUY_TICKET = 'ticketchain/ticket/buy-ticket';
-// const buyTicketActions = fetchActions(BUY_TICKET);
 
 
 export function sellTicket(eventName, location, price) {
@@ -52,7 +47,6 @@ export function sellTicket(eventName, location, price) {
 }
 
 export function fetchTickets() {
-  console.log('FIRING FROM FETCH TICKETS')
   let web3 = store.getState().web3.web3Instance
 
   // Double-check web3's status.

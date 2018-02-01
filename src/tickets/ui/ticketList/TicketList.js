@@ -9,8 +9,11 @@ class TicketList extends Component {
     this.createTicketListings = this.createTicketListings.bind(this);
   }
 
-  componentDidMount() {
-    this.props.onFetchTickets();
+  componentWillReceiveProps(nextProps) {
+    const { web3loading, onFetchTickets } = this.props;
+    if (web3loading !== nextProps.web3loading) {
+      onFetchTickets();
+    }
   }
 
   createTicketListings() {
