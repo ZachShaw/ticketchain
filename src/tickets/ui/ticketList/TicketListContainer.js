@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import TicketList from './TicketList';
 import { fetchTickets, buyTicket } from '../../../redux/ticket.js';
+import { fetchUser } from '../../../redux/user.js';
 import { WEB3_INITIALIZED } from '../../../redux/web3';
 
 const mapStateToProps = (state) => {
@@ -14,7 +15,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   onFetchTickets: () => dispatch(fetchTickets()),
-  onBuyTicket: (ticketId, price) => dispatch(buyTicket(ticketId, price))
+  onBuyTicket: (ticketId, price) => dispatch(buyTicket(ticketId, price)),
+  onFetchUser: (address) => dispatch(fetchUser(address))
 });
 
 const TicketListContainer = connect(

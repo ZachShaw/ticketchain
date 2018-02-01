@@ -4,7 +4,11 @@ import thunkMiddleware from 'redux-thunk'
 import { routerMiddleware, routerReducer } from 'react-router-redux'
 import * as reducer from './redux/index.js';
 import {autoRehydrate} from 'redux-persist';
-import logger from 'redux-logger'
+import { createLogger } from 'redux-logger'
+
+const logger = createLogger({
+  collapsed: true,
+});
 
 // Redux DevTools
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

@@ -10,8 +10,8 @@ class TicketList extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { web3loading, onFetchTickets } = this.props;
-    if (web3loading !== nextProps.web3loading) {
+    const { web3loading, onFetchTickets, tickets } = this.props;
+    if (web3loading !== nextProps.web3loading || !tickets) {
       onFetchTickets();
     }
   }
