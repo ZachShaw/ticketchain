@@ -45,9 +45,9 @@ class TicketList extends Component {
     if (!tickets) return null;
 
     return (
-      <div className="">
+      <div className="ticketlist--container">
         <h3>Available Tickets</h3>
-        <ul className="ticketlist--container">
+        <ul className="ticketlist--wrapper">
           {this.createTicketListings()}
         </ul>
       </div>

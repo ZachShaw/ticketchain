@@ -1,0 +1,86 @@
+.searchbar--wrapper {
+  width: 700px;
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.searchbar--input {
+  width: 75%;
+  border: 1px solid grey;
+  padding: 0 10px;
+}
+
+.searchbar--input:focus {
+  outline: none;
+}
+
+.searchbar--btn {
+  width: 25%;
+  border-radius: 0;
+}
+
+.search--results {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-bottom: 1px solid grey;
+}
+
+.search--results--event {
+  width: 32%;
+  display: flex;
+  margin: 20px 20px 20px 0;
+}
+
+.search--results--img {
+  height: 100px;
+}
+
+.search--results--info {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding-left: 20px;
+  /* height: 140px; */
+}
+
+.search--results--info > p {
+  color: darkgray;
+  margin: 5px 0;
+}
+
+.search--results--info > span {
+  color: green;
+  font-size: 12px;
+  margin: 0;
+}
+
+.search--results--left {
+  display: flex;
+  flex-direction: column;
+}
+
+.search--results--btn {
+  position: absolute;
+  bottom: 0;
+  width: 200px;
+}
+
+.search--results--date {
+  border: 1px solid black;
+  width: 100px;
+  height: 30px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search--results--date > h5 {
+  margin: 0;
+  font-weight: bold;
+}
+

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import SellTicketFormContainer from '../ui/sellTicketForm/SellTicketFormContainer';
-import TicketListContainer from '../ui/ticketList/TicketListContainer';
+// import SellTicketFormContainer from '../ui/sellticketform/SellTicketFormContainer';
+import TicketListContainer from '../ui/ticketlist/TicketListContainer';
+import SearchEvents from '../ui/searchevents/SearchEventsContainer';
 import { fetchTickets } from '../../redux/ticket.js';
 import { WEB3_INITIALIZED } from '../../redux/web3';
 
@@ -19,14 +20,14 @@ class Tickets extends Component {
   }
 
   render() {
+    const { events } = this.props;
 
     return(
       <main className="container">
         <div className="pure-g">
           <div className="pure-u-1-1">
-            <h1>Tickets</h1>
-            <SellTicketFormContainer/>
-            <br/>
+            {/* <SellTicketFormContainer/> */}
+            <SearchEvents events={events} />
             <TicketListContainer { ...this.props }/>
           </div>
         </div>
@@ -42,6 +43,7 @@ const mapStateToProps = (state) => {
       web3loading, 
       tickets: state.ticket.data,
       user: state.user.data,
+      events: state.events.data,
   };
 };
 
