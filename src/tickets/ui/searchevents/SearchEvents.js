@@ -42,7 +42,7 @@ class SearchEvents extends Component {
                   className="search--results--img"
                 />
                 <div className="search--results--date">
-                  <h4>{result.date}</h4>
+                  <h5>{result.date}</h5>
                 </div>
               </div>
               <div className="search--results--info">
