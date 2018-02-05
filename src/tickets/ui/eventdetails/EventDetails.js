@@ -40,7 +40,10 @@ class EventDetails extends Component {
         eventTickets.push(ticket);
       }
     })
-    this.setState((state, props) => { return { ticketsAvailable: [...this.state.ticketsAvailable, ...eventTickets]}})
+    if (eventTickets.length) {
+      this.setState((state, props) => { return { ticketsAvailable: eventTickets }
+      })
+    }
   }
 
   render() {
