@@ -1,0 +1,44 @@
+.event-tickets--container > ul {
+  padding: 0;
+}
+
+.event-tickets--container {
+  width: 70vw;
+}
+
+.event-tickets--item {
+  list-style: none;
+  display: flex;
+  height: 80px;
+  border: 1px solid grey;
+  margin: 20px 0;
+  border-radius: 3px;
+  padding: 0 20px;
+}
+
+.event-tickets--seller {
+  display: flex;
+  flex-direction: column;
+  width: 25%;
+  justify-content: center;
+}
+
+.event-tickets--seller > h4, h5 {
+  margin: 0;
+}
+
+.event-tickets--event-name {
+  width: 25%;
+}
+
+.event-tickets--ticket-price {
+  width: 20%;
+}
+
+.event-tickets--btn-cell {
+  width: 30%;
+}
+
+.event-tickets--btn {
+  width: 170px;
+}

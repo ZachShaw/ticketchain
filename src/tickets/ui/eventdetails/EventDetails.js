@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import './EventDetails.css';
+import EventTicketsContainer from '../eventtickets/EventTicketsContainer';
 
 class EventDetails extends Component {
   constructor(props) {
@@ -21,6 +22,7 @@ class EventDetails extends Component {
   componentWillReceiveProps(nextProps) {
     const { tickets, event } = nextProps;
     event && this.checkAvailableTickets(tickets, event);
+    this.setState({ toggleSellPrice: false });
   }
 
   onToggleSellPrice() {
@@ -48,7 +50,7 @@ class EventDetails extends Component {
 
   render() {
     const { event, onSellTicket } = this.props;
-    const { toggleSellPrice, price } = this.state;
+    const { toggleSellPrice, price, ticketsAvailable } = this.state;
 
     if (!event) return null;
 
@@ -71,33 +73,41 @@ class EventDetails extends Component {
         </div>
         <div className="event--content">
           <h4>{event.description}</h4>
-          <div className="event--tickets">
-            <h2>Currently {this.state.ticketsAvailable.length} tickets available</h2>
-            <button 
+          <div className="event--tickets-info">
+            <div className="event--availability">
+              <span>{this.state.ticketsAvailable.length}</span>
+              <p>Available</p>
+            </div>
+            { toggleSellPrice ?
+              <div className="event--sell">
+                <input id="price" type="text" value={this.state.price} 
+                  onChange={this.onChangeField('price')} placeholder="Sell For (Ether)" 
+                />
+                <button 
+                  type="button" 
+                  className="pure-button pure-button-primary event--sell-btn" 
+                  onClick={() => onSellTicket(event.id, event.eventname, price)}
+                >
+                  Sell
+              </button>
+              <button 
+                  type="button" 
+                  className="pure-button event--sell-btn" 
+                  onClick={() => this.onToggleSellPrice()}
+                >
+                  Cancel
+              </button>
+              </div> : <button 
               type="button" 
               className="pure-button pure-button-primary event--sell-btn" 
               onClick={() => this.onToggleSellPrice()}
             >
-              I want to list a ticket
+              I want to sell a ticket
             </button>
-            { toggleSellPrice ?
-              <div className="event--sell">
-              <label htmlFor="price">Sell For (Ether)</label>
-              <input id="price" type="text" value={this.state.price} 
-                onChange={this.onChangeField('price')} placeholder="Price" 
-              />
-              <button 
-                type="button" 
-                className="pure-button pure-button-primary" 
-                onClick={() => onSellTicket(event.id, event.eventname, price)}
-              >
-                Sell
-            </button>
-            </div> : null
             }
           </div>
         </div>
-        <p></p>
+        <EventTicketsContainer tickets={ticketsAvailable} />
       </div>
     )
   }

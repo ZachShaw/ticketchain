@@ -49,6 +49,52 @@
   padding: 10px 0;
 }
 
+.event--sell {
+  display: flex;
+  align-items: center;
+}
+
+.event--sell > input {
+  width: 200px;
+  height: 33px;
+  border-radius: 3px;
+  border-style: solid;
+  border: 1px solid grey;
+  padding: 5px 10px;
+  margin: 0 20px 0 0;
+  font-size: 14px;
+}
+
 .event--sell-btn {
-  width: 275px;
+  width: 200px;
+  height: 45px;
+  margin-right: 10px;
+}
+
+.event--availability {
+  height: 100px;
+  width: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border: 1px solid grey;
+  margin-bottom: 30px;
+  border-radius: 3px;
+}
+
+.event--availability > span {
+  font-weight: bold;
+  font-size: 22px;
+}
+
+.event--availability > p {
+  margin: 5px 0;
+  color: grey;
+  font-size: 14px;
+}
+
+.event--tickets-info {
+  display: flex;
+  flex-direction: column;
 }

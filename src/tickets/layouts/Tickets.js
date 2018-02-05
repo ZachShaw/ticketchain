@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 // import SellTicketFormContainer from '../ui/sellticketform/SellTicketFormContainer';
 import EventDetailsContainer from '../ui/eventdetails/EventDetailsContainer';
-import TicketListContainer from '../ui/ticketlist/TicketListContainer';
+// import TicketListContainer from '../ui/ticketlist/TicketListContainer';
 import SearchEvents from '../ui/searchevents/SearchEventsContainer';
 import { fetchTickets } from '../../redux/ticket.js';
 import { WEB3_INITIALIZED } from '../../redux/web3';
@@ -35,7 +35,7 @@ class Tickets extends Component {
             {/* <SellTicketFormContainer/> */}
             <SearchEvents events={events} />            
             <EventDetailsContainer event={selectedEvent} tickets={tickets}/>
-            <TicketListContainer { ...this.props }/>
+            {/*<TicketListContainer { ...this.props }/>*/}
           </div>
         </div>
       </main>
