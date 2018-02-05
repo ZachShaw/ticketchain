@@ -50,7 +50,7 @@ class SearchEvents extends Component {
                 
                 <p>{result.venue.address}</p>
                 <span>TICKETS AVAILABLE!</span>
-                <button className="pure-button pure-button-primary search--results--btn">Sell Ticket</button>
+                <button className="pure-button pure-button-primary search--results--btn">View Event</button>
               </div>
             </li>
           )}

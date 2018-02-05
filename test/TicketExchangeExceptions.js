@@ -8,7 +8,6 @@ contract('TicketExchange', (accounts) => {
   let ticketId = 1;
   let eventId = 'EV001';
   let eventName = 'Dimensions Festival 2018';
-  let eventLocation = 'Underground music festival in abandoned Roman fort';
   let ticketPrice = 0.5;
   let weiPrice = web3.toWei(ticketPrice, "ether");
 
@@ -31,7 +30,7 @@ contract('TicketExchange', (accounts) => {
   it("should throw an exception if you try to buy an ticket that does not exist", () => {
     return TicketExchange.deployed().then((instance) => {
       appInstance = instance;
-      appInstance.sellTicket(eventId, eventName, eventLocation, weiPrice, {
+      appInstance.sellTicket(eventId, eventName, weiPrice, {
         from: seller
       });
     }).then((receipt) => {
@@ -50,8 +49,7 @@ contract('TicketExchange', (accounts) => {
       assert.equal(data[2], 0x0, "there shouldnt be a buyer yet");
       assert.equal(data[3], eventId, "eventId must be equal to " + eventId);
       assert.equal(data[4], eventName, "event name must be equal to " + eventName);
-      assert.equal(data[5], eventLocation, "event name must be equal to " + eventLocation);
-      assert.equal(data[6].toNumber(), weiPrice, "ticket price must be equal to " + weiPrice);
+      assert.equal(data[5].toNumber(), weiPrice, "ticket price must be equal to " + weiPrice);
 
       return appInstance.getNumberOfTickets();
     }).then((data) => {
@@ -77,8 +75,7 @@ contract('TicketExchange', (accounts) => {
       assert.equal(data[2], 0x0, "buyer must still be empty ");
       assert.equal(data[3], eventId, "eventId must be equal to " + eventId);
       assert.equal(data[4], eventName, "eventName must be equal to " + eventName);
-      assert.equal(data[5], eventLocation, "eventLocation must be equal to " + eventLocation);
-      assert.equal(data[6].toNumber(), weiPrice, "ticket price must be equal to " + weiPrice);
+      assert.equal(data[5].toNumber(), weiPrice, "ticket price must be equal to " + weiPrice);
 
       return appInstance.getNumberOfTickets();
     }).then((data) => {
@@ -105,8 +102,7 @@ contract('TicketExchange', (accounts) => {
       assert.equal(data[2], 0x0, "buyer must still be empty ");
       assert.equal(data[3], eventId, "eventId must be equal to " + eventId);
       assert.equal(data[4], eventName, "eventName must be equal to " + eventName);
-      assert.equal(data[5], eventLocation, "eventLocation must be equal to " + eventLocation);
-      assert.equal(data[6].toNumber(), weiPrice, "ticket price must be equal to " + weiPrice);
+      assert.equal(data[5].toNumber(), weiPrice, "ticket price must be equal to " + weiPrice);
 
       return appInstance.getNumberOfTickets();
     }).then((data) => {
@@ -138,8 +134,7 @@ contract('TicketExchange', (accounts) => {
       assert.equal(data[2], buyer, "expect buyer to equal " + buyer);
       assert.equal(data[3], eventId, "expect eventId to equal " + eventId);
       assert.equal(data[4], eventName, "expect eventName to equal " + eventName);
-      assert.equal(data[5], eventLocation, "expect eventLocation to equal " + eventLocation);
-      assert.equal(data[6], weiPrice, "expect price to be equal to " + weiPrice);
+      assert.equal(data[5], weiPrice, "expect price to be equal to " + weiPrice);
 
       return appInstance.getNumberOfTickets();
     }).then((data) => {

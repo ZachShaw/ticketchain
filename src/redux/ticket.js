@@ -10,9 +10,8 @@ export const FETCH_TICKETS = 'ticketchain/ticket/fetch-tickets';
 const fetchTicketActions = fetchActions(FETCH_TICKETS);
 
 
-export function sellTicket(eventName, location, price) {
+export function sellTicket(eventId, eventName, price) {
   let web3 = store.getState().web3.web3Instance
-  let eventId = 'EV001';
   let _price = web3.toWei(price, "ether");
 
   // Double-check web3's status.
@@ -33,7 +32,7 @@ export function sellTicket(eventName, location, price) {
         ticketExchange.deployed().then(function(instance) {
           ticketExchangeInstance = instance
 
-          ticketExchangeInstance.sellTicket(eventId, eventName, location, _price, {from: coinbase})
+          ticketExchangeInstance.sellTicket(eventId, eventName, _price, {from: coinbase})
           .then(function(result) {
             return dispatch(fetchTickets())
           })
@@ -80,8 +79,7 @@ export function fetchTickets() {
                 buyer: ticket[2],
                 eventId: ticket[3],
                 eventName: ticket[4],
-                location: ticket[5],
-                price: web3.fromWei(ticket[6].toNumber())
+                price: web3.fromWei(ticket[5].toNumber())
               }
               ticketsForSale.push(ticketObj);
               if (i === ticketIds.length - 1) {
