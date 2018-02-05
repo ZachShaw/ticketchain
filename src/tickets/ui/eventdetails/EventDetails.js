@@ -10,7 +10,7 @@ class EventDetails extends Component {
     this.state = {
       toggleSellPrice: false,
       price: '',
-      ticketsAvailable: 0,
+      ticketsAvailable: [],
     }
 
     this.onToggleSellPrice = this.onToggleSellPrice.bind(this);
@@ -18,8 +18,9 @@ class EventDetails extends Component {
     this.checkAvailableTickets = this.checkAvailableTickets.bind(this);
   }
 
-  componentWillReceiveProps() {
-    this.checkAvailableTickets();
+  componentWillReceiveProps(nextProps) {
+    const { tickets, event } = nextProps;
+    event && this.checkAvailableTickets(tickets, event);
   }
 
   onToggleSellPrice() {
@@ -31,14 +32,15 @@ class EventDetails extends Component {
 
   onChangeField = (fieldName) => (e) => this.setState({[fieldName]: e.target.value});
 
-  checkAvailableTickets() {
-    const { tickets, event } = this.props;
-
-    tickets.length && this.state.ticketsAvailable === 0 && tickets.forEach((ticket) => {
+  checkAvailableTickets(tickets, event) {
+    this.setState({ ticketsAvailable: [] });
+    let eventTickets = [];
+    tickets.length > 0 && tickets.forEach((ticket) => {
       if (ticket.eventId === event.id) {
-        this.setState((state, props) => { return { ticketsAvailable: state.ticketsAvailable + 1 }})
+        eventTickets.push(ticket);
       }
     })
+    this.setState((state, props) => { return { ticketsAvailable: [...this.state.ticketsAvailable, ...eventTickets]}})
   }
 
   render() {
@@ -67,7 +69,7 @@ class EventDetails extends Component {
         <div className="event--content">
           <h4>{event.description}</h4>
           <div className="event--tickets">
-            <h2>Currently {this.state.ticketsAvailable} tickets available</h2>
+            <h2>Currently {this.state.ticketsAvailable.length} tickets available</h2>
             <button 
               type="button" 
               className="pure-button pure-button-primary event--sell-btn" 

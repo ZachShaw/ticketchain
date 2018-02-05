@@ -27,7 +27,7 @@ class Tickets extends Component {
 
   render() {
     const { events, selectedEvent, tickets } = this.props;
-    
+
     return(
       <main className="container">
         <div className="pure-g">
