@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import EventDetails from './EventDetails';
-import { sellTicket } from '../../../redux/tickets.js';
+import { sellTicket } from '../../../redux/ticket.js';
 
 
 const mapStateToProps = (state, ownProps) => {

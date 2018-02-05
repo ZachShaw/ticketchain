@@ -1,0 +1,54 @@
+.event--container {
+  padding: 40px 0;
+}
+
+.event--header {
+  display: flex;
+  position: relative;
+}
+
+.event--header > img {
+  border: 2px solid #0c1a2b;
+}
+
+.event--header-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 0 0 20px;
+}
+
+.event--header-info > h1 {
+  margin: 0;
+}
+
+.event--header-info > span:first-of-type {
+  margin-bottom: 20px;
+}
+
+.event--header-info > span {
+  font-weight: bold;
+  font-size: 16px;
+  color: #2b2b2b;
+  /* margin-top: 10px; */
+}
+
+.event--header-info > span:last-of-type {
+  font-style: italic;
+  font-size: 15px;
+}
+
+.event--header-additional {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0 40px 0 0;
+}
+
+.event--content {
+  padding: 10px 0;
+}
+
+.event--sell-btn {
+  width: 275px;
+}

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 // import SellTicketFormContainer from '../ui/sellticketform/SellTicketFormContainer';
+import EventDetailsContainer from '../ui/eventdetails/EventDetailsContainer';
 import TicketListContainer from '../ui/ticketlist/TicketListContainer';
 import SearchEvents from '../ui/searchevents/SearchEventsContainer';
 import { fetchTickets } from '../../redux/ticket.js';
@@ -13,22 +14,27 @@ class Tickets extends Component {
     authData = this.props;
   }
 
+  componentDidMount() {
+    this.props.onFetchTickets();
+  }
+
   componentWillReceiveProps(nextProps) {
     const { web3loading, onFetchTickets, tickets } = this.props;
-    if (web3loading !== nextProps.web3loading || !tickets) {
+    if (web3loading !== nextProps.web3loading || !tickets.length) {
       onFetchTickets();
     }
   }
 
   render() {
-    const { events } = this.props;
-
+    const { events, selectedEvent, tickets } = this.props;
+    
     return(
       <main className="container">
         <div className="pure-g">
           <div className="pure-u-1-1">
             {/* <SellTicketFormContainer/> */}
-            <SearchEvents events={events} />
+            <SearchEvents events={events} />            
+            <EventDetailsContainer event={selectedEvent} tickets={tickets}/>
             <TicketListContainer { ...this.props }/>
           </div>
         </div>
@@ -45,6 +51,7 @@ const mapStateToProps = (state) => {
       tickets: state.ticket.data,
       user: state.user.data,
       events: state.events.data,
+      selectedEvent: state.events.selected,
   };
 };
 
