@@ -16,7 +16,7 @@ class SearchEvents extends Component {
 
   render() {
     const { searchTerm } = this.state;
-    const { events } = this.props;
+    const { events, onSelectEvent } = this.props;
     const { results } = events;
 
     return (
@@ -50,7 +50,7 @@ class SearchEvents extends Component {
                 
                 <p>{result.venue.address}</p>
                 <span>TICKETS AVAILABLE!</span>
-                <button className="pure-button pure-button-primary search--results--btn">View Event</button>
+                <button className="pure-button pure-button-primary search--results--btn" onClick={() => onSelectEvent(result)}>View Event</button>
               </div>
             </li>
           )}

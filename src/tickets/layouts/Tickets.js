@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 // import SellTicketFormContainer from '../ui/sellticketform/SellTicketFormContainer';
 import TicketListContainer from '../ui/ticketlist/TicketListContainer';
@@ -50,5 +51,13 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   onFetchTickets: () => dispatch(fetchTickets())
 });
+
+Tickets.PropTypes = {
+  onFetchTickets: PropTypes.func,
+  events: PropTypes.object,
+  user: PropTypes.object,
+  tickets: PropTypes.array,
+  web3loading: PropTypes.bool,
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Tickets);

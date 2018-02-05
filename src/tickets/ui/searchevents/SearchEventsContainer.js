@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import SearchEvents from './SearchEvents';
-import { searchEvents } from '../../../redux/events.js';
+import { searchEvents, selectEvent } from '../../../redux/events.js';
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -10,6 +10,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => ({
   onSearchEvents: (searchTerm) => dispatch(searchEvents(searchTerm)),
+  onSelectEvent: (event) => dispatch(selectEvent(event))
 });
 
 const SearchEventsContainer = connect(

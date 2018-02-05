@@ -6,7 +6,6 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import { UserIsAuthenticated, UserIsNotAuthenticated } from './util/wrappers.js'
 import getWeb3 from './util/web3/getWeb3';
 import { persistStore } from 'redux-persist';
-// import { getWeb3 } from './redux/web3.js';
 
 // Layouts
 import App from './App'

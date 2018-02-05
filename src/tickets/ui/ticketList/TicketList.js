@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import './TicketList.css';
 
 class TicketList extends Component {
@@ -53,6 +54,14 @@ class TicketList extends Component {
       </div>
     )
   }
+}
+
+TicketList.PropTypes = {
+  onBuyTicket: PropTypes.func,
+  events: PropTypes.object,
+  user: PropTypes.object,
+  tickets: PropTypes.array,
+  web3loading: PropTypes.bool,
 }
 
 export default TicketList;

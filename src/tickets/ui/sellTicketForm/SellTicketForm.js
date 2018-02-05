@@ -17,8 +17,8 @@ class SellTicketForm extends Component {
   onChangeField = (fieldName) => (e) => this.setState({[fieldName]: e.target.value});
 
   handleSubmit(event) {
+    event.preventDefault();
     const { eventName, location, price } = this.state;
-    event.preventDefault()
 
     if (eventName.length < 2) {
       return alert('Please fill in your name.')
