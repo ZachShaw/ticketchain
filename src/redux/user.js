@@ -28,12 +28,6 @@ export function loginUser() {
         authentication.deployed().then((instance) => {
           authenticationInstance = instance
           authenticationInstance.login({from: coinbase})
-          .catch((error) => {
-            console.error('Wallet ' + coinbase + ' does not have an account!')
-            dispatch(loginActions.error(error));
-            Promise.reject(error);
-            return browserHistory.push('/signup')
-          })
           .then((result) => {
             var name = web3.toUtf8(result[0]);
             var email = web3.toUtf8(result[1]);
@@ -48,6 +42,12 @@ export function loginUser() {
             }
 
             return browserHistory.push('/dashboard')
+          })
+          .catch((error) => {
+            console.error('Wallet ' + coinbase + ' does not have an account!');
+            const err = 'User does not exist, please sign up first';
+            browserHistory.push('/signup');
+            return dispatch(loginActions.error(err));
           })
         })
       })

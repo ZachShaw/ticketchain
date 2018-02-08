@@ -31,7 +31,7 @@ getWeb3
 })
 
 persistStore(store, {
-  whitelist: ['user', 'events']
+  whitelist: ['user']
 }, () => {
   ReactDOM.render((
     <Provider store={store}>
