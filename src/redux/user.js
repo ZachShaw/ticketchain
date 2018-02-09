@@ -1,13 +1,13 @@
 import { handleActions, createAction } from 'redux-actions';
 import { fetchActions, fetchSuccess } from './utils.js';
 import { browserHistory } from 'react-router'
-import store from '../store'
+import store from '../store';
 import AuthenticationContract from '../../build/contracts/Authentication.json'
 
 const contract = require('truffle-contract')
 
 export const LOGIN = 'ticketchain/login/login';
-const loginActions = fetchActions(LOGIN);
+export const loginActions = fetchActions(LOGIN);
 export const LOGOUT = 'ticketchain/login/logout';
 // export const FETCH_USER = 'ticketchain/user/fetch_user';
 // const fetchUserActions = fetchActions(FETCH_USER);
