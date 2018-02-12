@@ -1,7 +1,7 @@
 import toBeType from "jest-tobetype";
 expect.extend(toBeType);
 import * as reducer from '../../redux/index.js';
-import { loginActions, LOGIN } from '../../redux/user.js';
+import { loginActions, LOGIN, logout, LOGOUT } from '../../redux/user.js';
 
 const mock = {
   loggedInUser: {
@@ -10,7 +10,6 @@ const mock = {
     username: 'zshaw'
   }
 }
-
 
 describe('User duck', () => {
   const initState = {
@@ -46,6 +45,37 @@ describe('User duck', () => {
     it('should update state', () => {
       const state = reducer.user(initState, loginActions.success(mock.loggedInUser));
       expect(state.data).toEqual(mock.loggedInUser);
+    })
+  })
+
+  describe('[Action] - loginUserError', () => {
+    it('Should be a function', () => {
+      expect(loginActions.error).toBeType('function');
+    })
+
+    it('Should return an action of type ticketchain/login/login/success', () => {
+      expect(loginActions.error()).toHaveProperty('type', `${LOGIN}/error`)
+    })
+
+    it('should not update state', () => {
+      const state = reducer.user(initState, loginActions.error());
+      expect(state.data).toEqual(initState.data);
+    })
+  })
+
+  describe('[Action] - logoutUser', () => {
+    it('Should be a function', () => {
+      expect(logout).toBeType('function');
+    })
+
+    it('Should return an action of type ticketchain/login/logout', () => {
+      expect(logout()).toHaveProperty('type', LOGOUT)
+    })
+
+    it('should log the user out', () => {
+      const state = reducer.user(initState, loginActions.success(mock.loggedInUser));
+      const newState = reducer.user(state, logout());
+      expect(newState.data).toEqual(initState.data);
     })
   })
 })
