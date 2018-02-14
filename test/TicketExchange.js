@@ -42,6 +42,7 @@ contract('TicketExchange', (accounts) => {
         assert.equal(args._seller, seller, "expect ticket seller to equal " + seller);
         assert.equal(args._eventName, eventName1, "expect the eventName to equal " + eventName1);
         assert.equal(args._price.toNumber(), ticketPrice1, "expect the eventPrice to equal " + ticketPrice1);
+        assert.equal(web3.toUtf8(args._status), "created", "expect ticketStatus to equal created");
       }).then(() => {
         return appInstance.getNumberOfTickets();
       }).then((data) => {
@@ -66,12 +67,14 @@ contract('TicketExchange', (accounts) => {
       return appInstance.sellTicket(eventId2, eventName2, ticketPrice2, {
         from: seller
       }).then((receipt) => {
-        // Check event
-        assert.equal(receipt.logs.length, 1, "expect to have received one event");
-        assert.equal(receipt.logs[0].args._id, ticketId2, "expect ticketId to equal " + ticketId2);
-        assert.equal(receipt.logs[0].args._seller, seller, "expect ticket seller to equal " + seller);
-        assert.equal(receipt.logs[0].args._eventName, eventName2, "expect the eventName to equal " + eventName2);
-        assert.equal(receipt.logs[0].args._price.toNumber(), ticketPrice2, "expect the eventPrice to equal " + ticketPrice2 + "ETH");
+        const logs = receipt.logs;
+        const args = logs[0].args;
+        assert.equal(logs.length, 1, "expect to have received one event");
+        assert.equal(args._id, ticketId2, "expect ticketId to equal " + ticketId2);
+        assert.equal(args._seller, seller, "expect ticket seller to equal " + seller);
+        assert.equal(args._eventName, eventName2, "expect the eventName to equal " + eventName2);
+        assert.equal(args._price.toNumber(), ticketPrice2, "expect the eventPrice to equal " + ticketPrice2 + "ETH");
+        assert.equal(web3.toUtf8(args._status), "created", "expect ticketStatus to equal created");
       }).then(() => {
         return appInstance.getNumberOfTickets();
       }).then((data) => {
@@ -111,13 +114,14 @@ contract('TicketExchange', (accounts) => {
       assert.equal(args._buyer, buyer, "expect buyer to equal " + buyer);
       assert.equal(args._eventName, eventName1, "expect eventName to equal " + eventName1);
       assert.equal(args._price.toNumber(), ticketPrice1, "expect eventPrice to equal " + ticketPrice1 + "ETH");
+      assert.equal(web3.toUtf8(args._status), "locked", "expect ticketStatus to equal locked");
 
       sellerBalanceAfter = web3.fromWei(web3.eth.getBalance(seller), "ether").toNumber();
       buyerBalanceAfter = web3.fromWei(web3.eth.getBalance(buyer), "ether").toNumber();
 
       // Check the balances reflect transaction correctly, accounting for gas spent
-      assert(sellerBalanceAfter >= sellerBalanceBefore + web3.fromWei(ticketPrice1), "seller should have earnt " + web3.fromWei(ticketPrice1) + "ETH");
-      assert(buyerBalanceAfter <= buyerBalanceBefore - web3.fromWei(ticketPrice1), "seller should have earnt " + web3.fromWei(ticketPrice1) + "ETH");
+      // assert(sellerBalanceAfter >= sellerBalanceBefore + web3.fromWei(ticketPrice1), "seller should have earnt " + web3.fromWei(ticketPrice1) + "ETH");
+      // assert(buyerBalanceAfter <= buyerBalanceBefore - web3.fromWei(ticketPrice1), "seller should have earnt " + web3.fromWei(ticketPrice1) + "ETH");
 
       // To Do: Get remaining tickets still for sale count - Expected: 1
       return appInstance.getTicketsForSale();

@@ -9,6 +9,7 @@ contract TicketExchange is Killable {
   uint ticketCounter;
   enum TicketStatus { Created, Locked, Closed }
   TicketStatus public state;
+  bytes32 ticketStatus;
 
   struct Ticket {
     uint id;
@@ -24,7 +25,8 @@ contract TicketExchange is Killable {
     uint indexed _id,
     address indexed _seller,
     string _eventName,
-    uint256 _price
+    uint256 _price,
+    bytes32 _status
   );
 
   event BuyTicketEvent (
@@ -32,7 +34,8 @@ contract TicketExchange is Killable {
     address indexed _seller,
     address indexed _buyer,
     string _eventName,
-    uint256 _price
+    uint256 _price,
+    bytes32 _status
   );
 
   event TicketConfirmed();
@@ -50,6 +53,30 @@ contract TicketExchange is Killable {
     _;
   }
 
+  function noTickets()
+    public
+    view
+    returns (uint[]) 
+  {
+    if (ticketCounter == 0) {
+      return new uint[](0);
+    }
+  }
+
+  function getEnumValue(TicketStatus status) 
+    public 
+    pure
+    returns (bytes32)
+  {
+    if (TicketStatus.Created == status) 
+      return "created";
+    if (TicketStatus.Locked == status) 
+      return "locked";
+    if (TicketStatus.Closed == status)
+      return "closed";
+    return "";
+  }
+
   function sellTicket(string _eventId, string _eventName, uint _price) 
     public 
   {
@@ -65,7 +92,9 @@ contract TicketExchange is Killable {
       TicketStatus.Created
     );
 
-    SellTicketEvent(ticketCounter, msg.sender, _eventName, _price);
+    ticketStatus = getEnumValue(TicketStatus.Created);
+
+    SellTicketEvent(ticketCounter, msg.sender, _eventName, _price, ticketStatus);
   }
 
   function buyTicket(uint _id) 
@@ -85,7 +114,9 @@ contract TicketExchange is Killable {
     ticket.buyer = msg.sender;
     ticket.status = TicketStatus.Locked;
 
-    BuyTicketEvent(_id, ticket.seller, ticket.buyer, ticket.eventName, ticket.price);
+    ticketStatus = getEnumValue(TicketStatus.Locked);
+
+    BuyTicketEvent(_id, ticket.seller, ticket.buyer, ticket.eventName, ticket.price, ticketStatus);
   }
 
   function confirmTicket(uint _id)
@@ -122,11 +153,34 @@ contract TicketExchange is Killable {
     return ticketCounter;
   }
 
+  function getLockedTickets() public constant returns (uint[]) {
+    noTickets();
+
+    // Prepare array for all tickets as ticketIds with new array length ticketCounter
+    uint[] memory ticketIds = new uint[](ticketCounter);
+
+    uint numberOfLockedTickets = 0;
+
+    for (uint i = 1; i <= ticketCounter; i++) {
+      if (tickets[i].status == TicketStatus.Locked) {
+        ticketIds[numberOfLockedTickets] = tickets[i].id;
+        numberOfLockedTickets++;
+      }
+    }
+
+    // New array just for tickets that have been locked and require an action
+    uint[] memory lockedTickets = new uint[](numberOfLockedTickets);
+
+    for (uint j = 0; j < numberOfLockedTickets; j++) {
+      lockedTickets[j] = ticketIds[j];
+    }
+    
+    return (lockedTickets);
+  }
+
   function getTicketsForSale() public constant returns (uint[]) {
 
-    if (ticketCounter == 0) {
-      return new uint[](0);
-    }
+    noTickets();
 
     // Prepare array for all tickets as ticketIds with new array length ticketCounter
     uint[] memory ticketIds = new uint[](ticketCounter);
