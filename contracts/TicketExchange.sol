@@ -7,7 +7,7 @@ contract TicketExchange is Killable {
   // State variables
   mapping(uint => Ticket) public tickets;
   uint ticketCounter;
-  enum TicketStatus { Created, Locked, Inactive }
+  enum TicketStatus { Created, Locked, Closed }
   TicketStatus public state;
 
   struct Ticket {
@@ -82,9 +82,9 @@ contract TicketExchange is Killable {
     require(ticket.status == TicketStatus.Locked);
     require(ticket.buyer == msg.sender);
 
-    ticket.status = TicketStatus.Inactive;
+    ticket.status = TicketStatus.Closed;
 
-    ticket.seller.transfer(this.balance);
+    ticket.seller.transfer(ticket.price);
 
     TicketConfirmed();
   }
