@@ -36,11 +36,25 @@ contract TicketExchange is Killable {
   );
 
   event TicketConfirmed();
+  event TicketRefunded();
 
-  function sellTicket(string _eventId, string _eventName, uint _price) public {
-    ticketCounter++;
+  modifier onlyBuyer(uint _id) {
+    Ticket storage ticket = tickets[_id];
+    require(ticket.buyer == msg.sender);
+    _;
+  }
 
-    // Storing ticket
+  modifier onlySeller(uint _id) {
+    Ticket storage ticket = tickets[_id];
+    require(ticket.seller == msg.sender);
+    _;
+  }
+
+  function sellTicket(string _eventId, string _eventName, uint _price) 
+    public 
+  {
+    ticketCounter++; // TicketId
+
     tickets[ticketCounter] = Ticket(
       ticketCounter,
       msg.sender,
@@ -66,9 +80,9 @@ contract TicketExchange is Killable {
     require(ticket.buyer == 0x0);
     require(ticket.seller != msg.sender);
     require(ticket.price == msg.value);
+    require(ticket.status == TicketStatus.Created);
 
     ticket.buyer = msg.sender;
-    // ticket.seller.transfer(msg.value);
     ticket.status = TicketStatus.Locked;
 
     BuyTicketEvent(_id, ticket.seller, ticket.buyer, ticket.eventName, ticket.price);
@@ -76,17 +90,32 @@ contract TicketExchange is Killable {
 
   function confirmTicket(uint _id)
     public
+    onlyBuyer(_id)
   {
     Ticket storage ticket = tickets[_id];
 
     require(ticket.status == TicketStatus.Locked);
-    require(ticket.buyer == msg.sender);
 
     ticket.status = TicketStatus.Closed;
 
     ticket.seller.transfer(ticket.price);
 
     TicketConfirmed();
+  }
+
+  function refundTicket(uint _id)
+    public
+    onlySeller(_id)
+  {
+    Ticket storage ticket = tickets[_id];
+
+    require(ticket.status == TicketStatus.Locked);
+
+    ticket.status = TicketStatus.Closed;
+
+    ticket.buyer.transfer(ticket.price);
+
+    TicketRefunded();
   }
 
   function getNumberOfTickets() public constant returns (uint) {
