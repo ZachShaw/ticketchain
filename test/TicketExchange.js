@@ -95,7 +95,7 @@ contract('TicketExchange', (accounts) => {
   it('should take payment from buyer for the 1st ticket and set ticket status to locked', () => {
     return TicketExchange.deployed().then((instance) => {
       appInstance = instance;
-      
+
       buyerBalanceBefore = web3.fromWei(web3.eth.getBalance(buyer), "ether").toNumber();
 
       return appInstance.buyTicket(ticketId1, {
@@ -128,7 +128,7 @@ contract('TicketExchange', (accounts) => {
     })
   })
 
-  it('should confirm ticket as valid from the buyer and release funds to the seller', () => {
+  it('should confirm ticket as valid from the buyer and release payment to the seller', () => {
     return TicketExchange.deployed().then((instance) => {
       appInstance = instance;
 
@@ -154,6 +154,7 @@ contract('TicketExchange', (accounts) => {
 
       buyerBalanceBefore = web3.fromWei(web3.eth.getBalance(buyer), "ether").toNumber();
       buyerBalanceMinusGas = buyerBalanceBefore * 0.99 // Rough estimate of 1% paid in gas
+
       appInstance.buyTicket(ticketId2, {
         from: buyer,
         value: ticketPrice2
@@ -167,9 +168,10 @@ contract('TicketExchange', (accounts) => {
       });
     }).then((receipt) => {
       buyerBalanceAfter = web3.fromWei(web3.eth.getBalance(buyer), "ether").toNumber();
+
       assert.equal(receipt.logs.length, 1, "expect to receive one event");
 
-      assert(buyerBalanceAfter > buyerBalanceMinusGas && buyerBalanceAfter > buyerBalanceBefore, "buyer should received a refund within 99% of original price paid");
+      assert(buyerBalanceAfter > buyerBalanceMinusGas && buyerBalanceAfter < buyerBalanceBefore, "buyer should received a refund within 99% of original price paid");
     })
   })
 });

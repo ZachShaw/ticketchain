@@ -140,5 +140,37 @@ contract('TicketExchange', (accounts) => {
     }).then((data) => {
       assert.equal(data.toNumber(), 1, "one event should still be listed");
     });
+  }),
+
+  it("should throw and exception if the seller tries to release payment", () => {
+    return TicketExchange.deployed().then((instance) => {
+      appInstance = instance;
+
+      return appInstance.confirmTicket(ticketId, {
+        from: seller
+      });
+    }).then(assert.fail)
+    .catch((error) => {
+    }).then(() => {
+      return appInstance.getLockedTickets();
+    }).then((data) => {
+      assert.equal(data.length, 1, "expect only one ticket to be locked");
+    });
+  }),
+
+  it("should throw and exception if the buyer tries to refund payment", () => {
+    return TicketExchange.deployed().then((instance) => {
+      appInstance = instance;
+
+      return appInstance.refundTicket(ticketId, {
+        from: buyer
+      });
+    }).then(assert.fail)
+    .catch((error) => {
+    }).then(() => {
+      return appInstance.getLockedTickets();
+    }).then((data) => {
+      assert.equal(data.length, 1, "expect only one ticket to be locked");
+    });
   });
 });
