@@ -11,7 +11,7 @@ contract('TicketExchange', (accounts) => {
   let ticketPrice = 0.5;
   let weiPrice = web3.toWei(ticketPrice, "ether");
 
-  it("should throw an exception if you try to buy a ticket when none are for sale", () => {
+  it("should throw an exception if buyer tries to buy a ticket when none are for sale", () => {
     return TicketExchange.deployed().then((instance) => {
       appInstance = instance;
       return appInstance.buyTicket(ticketId, {
@@ -27,7 +27,7 @@ contract('TicketExchange', (accounts) => {
     });
   }),
   
-  it("should throw an exception if you try to buy an ticket that does not exist", () => {
+  it("should throw an exception if buyer tries to buy a ticket that does not exist", () => {
     return TicketExchange.deployed().then((instance) => {
       appInstance = instance;
       appInstance.sellTicket(eventId, eventName, weiPrice, {
@@ -110,7 +110,7 @@ contract('TicketExchange', (accounts) => {
     });
   }),
 
-  it("should throw and exception if the ticket has already been bought by another user", () => {
+  it("should throw an exception if the ticket has already been bought by another user", () => {
     return TicketExchange.deployed().then((instance) => {
       appInstance = instance;
 
@@ -142,7 +142,7 @@ contract('TicketExchange', (accounts) => {
     });
   }),
 
-  it("should throw and exception if the seller tries to release payment", () => {
+  it("should throw an exception if the seller tries to release payment", () => {
     return TicketExchange.deployed().then((instance) => {
       appInstance = instance;
 
@@ -158,7 +158,7 @@ contract('TicketExchange', (accounts) => {
     });
   }),
 
-  it("should throw and exception if the buyer tries to refund payment", () => {
+  it("should throw an exception if the buyer tries to refund payment", () => {
     return TicketExchange.deployed().then((instance) => {
       appInstance = instance;
 
