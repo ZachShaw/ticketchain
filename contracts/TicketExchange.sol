@@ -38,8 +38,9 @@ contract TicketExchange is Killable {
     bytes32 _status
   );
 
-  event TicketConfirmed();
-  event TicketRefunded();
+  event TicketConfirmed(bytes32 _status);
+  event TicketRefunded(bytes32 _status);
+  event TicketCancelled(bytes32 _status);
 
   modifier onlyBuyer(uint _id) {
     Ticket storage ticket = tickets[_id];
@@ -75,6 +76,16 @@ contract TicketExchange is Killable {
     if (TicketStatus.Closed == status)
       return "closed";
     return "";
+  }
+
+  function cancelTicket(uint _id)
+    public
+    onlySeller(_id)
+  {
+      Ticket storage ticket = tickets[_id];
+      ticket.status = TicketStatus.Closed;
+      ticketStatus = getEnumValue(TicketStatus.Closed);
+      TicketCancelled(ticketStatus);
   }
 
   function sellTicket(string _eventId, string _eventName, uint _price) 
@@ -127,7 +138,8 @@ contract TicketExchange is Killable {
     require(ticket.status == TicketStatus.Locked);
     ticket.status = TicketStatus.Closed;
     ticket.seller.transfer(ticket.price);
-    TicketConfirmed();
+    ticketStatus = getEnumValue(TicketStatus.Closed);
+    TicketConfirmed(ticketStatus);
   }
 
   function refundTicket(uint _id)
@@ -138,7 +150,8 @@ contract TicketExchange is Killable {
     require(ticket.status == TicketStatus.Locked);
     ticket.status = TicketStatus.Closed;
     ticket.buyer.transfer(ticket.price);
-    TicketRefunded();
+    ticketStatus = getEnumValue(TicketStatus.Closed);
+    TicketRefunded(ticketStatus);
   }
 
   function getNumberOfTickets() public constant returns (uint) {
