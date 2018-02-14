@@ -92,11 +92,10 @@ contract('TicketExchange', (accounts) => {
     })
   }),
 
-  it('should buy a ticket and successfully represent this purchase in the chain data', () => {
+  it('should take payment from buyer for the 1st ticket and set ticket status to locked', () => {
     return TicketExchange.deployed().then((instance) => {
       appInstance = instance;
-
-      sellerBalanceBefore = web3.fromWei(web3.eth.getBalance(seller), "ether").toNumber();
+      
       buyerBalanceBefore = web3.fromWei(web3.eth.getBalance(buyer), "ether").toNumber();
 
       return appInstance.buyTicket(ticketId1, {
@@ -104,7 +103,7 @@ contract('TicketExchange', (accounts) => {
         value: ticketPrice1
       });
     }).then((receipt) => {
-      // Check event
+
       const logs = receipt.logs;
       const args = logs[0].args;
 
@@ -116,17 +115,61 @@ contract('TicketExchange', (accounts) => {
       assert.equal(args._price.toNumber(), ticketPrice1, "expect eventPrice to equal " + ticketPrice1 + "ETH");
       assert.equal(web3.toUtf8(args._status), "locked", "expect ticketStatus to equal locked");
 
-      sellerBalanceAfter = web3.fromWei(web3.eth.getBalance(seller), "ether").toNumber();
       buyerBalanceAfter = web3.fromWei(web3.eth.getBalance(buyer), "ether").toNumber();
 
-      // Check the balances reflect transaction correctly, accounting for gas spent
-      // assert(sellerBalanceAfter >= sellerBalanceBefore + web3.fromWei(ticketPrice1), "seller should have earnt " + web3.fromWei(ticketPrice1) + "ETH");
-      // assert(buyerBalanceAfter <= buyerBalanceBefore - web3.fromWei(ticketPrice1), "seller should have earnt " + web3.fromWei(ticketPrice1) + "ETH");
+      assert(buyerBalanceAfter <= buyerBalanceBefore - web3.fromWei(ticketPrice1), "buyer should have spent " + web3.fromWei(ticketPrice1) + "ETH");
 
-      // To Do: Get remaining tickets still for sale count - Expected: 1
       return appInstance.getTicketsForSale();
     }).then((data) => {
       assert.equal(data.length, 1, "expect only one ticket to still be on sale");
+      return appInstance.getLockedTickets();
+    }).then((data) => {
+      assert.equal(data.length, 1, "expect only one ticket to be locked");
+    })
+  })
+
+  it('should confirm ticket as valid from the buyer and release funds to the seller', () => {
+    return TicketExchange.deployed().then((instance) => {
+      appInstance = instance;
+
+      sellerBalanceBefore = web3.fromWei(web3.eth.getBalance(seller), "ether").toNumber();
+
+      return appInstance.confirmTicket(ticketId1, {
+        from: buyer
+      });
+    }).then((receipt) => {
+      sellerBalanceAfter = web3.fromWei(web3.eth.getBalance(seller), "ether").toNumber();
+      assert.equal(receipt.logs.length, 1, "expect to receive one event");
+      assert(sellerBalanceAfter >= sellerBalanceBefore + web3.fromWei(ticketPrice1), "seller should have earnt " + web3.fromWei(ticketPrice1) + "ETH");
+      
+      return appInstance.getLockedTickets();
+    }).then((data) => {
+      assert.equal(data.length, 0, "expect no tickets to be locked");
+    })
+  })
+
+  it('should refund purchase of second ticket back to the buyers account', () => {
+    return TicketExchange.deployed().then((instance) => {
+      appInstance = instance;
+
+      buyerBalanceBefore = web3.fromWei(web3.eth.getBalance(buyer), "ether").toNumber();
+      buyerBalanceMinusGas = buyerBalanceBefore * 0.99 // Rough estimate of 1% paid in gas
+      appInstance.buyTicket(ticketId2, {
+        from: buyer,
+        value: ticketPrice2
+      });
+      return appInstance.getLockedTickets();
+    }).then((data) => {
+      assert.equal(data.length, 1, "expect only one ticket to be locked");
+
+      return appInstance.refundTicket(ticketId2, {
+        from: seller
+      });
+    }).then((receipt) => {
+      buyerBalanceAfter = web3.fromWei(web3.eth.getBalance(buyer), "ether").toNumber();
+      assert.equal(receipt.logs.length, 1, "expect to receive one event");
+
+      assert(buyerBalanceAfter > buyerBalanceMinusGas && buyerBalanceAfter > buyerBalanceBefore, "buyer should received a refund within 99% of original price paid");
     })
   })
 });

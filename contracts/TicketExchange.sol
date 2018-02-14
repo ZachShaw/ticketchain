@@ -124,13 +124,9 @@ contract TicketExchange is Killable {
     onlyBuyer(_id)
   {
     Ticket storage ticket = tickets[_id];
-
     require(ticket.status == TicketStatus.Locked);
-
     ticket.status = TicketStatus.Closed;
-
     ticket.seller.transfer(ticket.price);
-
     TicketConfirmed();
   }
 
@@ -139,13 +135,9 @@ contract TicketExchange is Killable {
     onlySeller(_id)
   {
     Ticket storage ticket = tickets[_id];
-
     require(ticket.status == TicketStatus.Locked);
-
     ticket.status = TicketStatus.Closed;
-
     ticket.buyer.transfer(ticket.price);
-
     TicketRefunded();
   }
 
@@ -156,9 +148,7 @@ contract TicketExchange is Killable {
   function getLockedTickets() public constant returns (uint[]) {
     noTickets();
 
-    // Prepare array for all tickets as ticketIds with new array length ticketCounter
     uint[] memory ticketIds = new uint[](ticketCounter);
-
     uint numberOfLockedTickets = 0;
 
     for (uint i = 1; i <= ticketCounter; i++) {
@@ -179,12 +169,9 @@ contract TicketExchange is Killable {
   }
 
   function getTicketsForSale() public constant returns (uint[]) {
-
     noTickets();
 
-    // Prepare array for all tickets as ticketIds with new array length ticketCounter
     uint[] memory ticketIds = new uint[](ticketCounter);
-
     uint numberOfTicketsForSale = 0;
 
     for (uint i = 1; i <= ticketCounter; i++) {
