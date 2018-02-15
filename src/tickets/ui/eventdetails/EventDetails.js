@@ -21,8 +21,8 @@ class EventDetails extends Component {
 
   componentWillReceiveProps(nextProps) {
     // Compare props with next props to see if anything needs firing
-    const { tickets, event } = nextProps;
-    event && this.checkAvailableTickets(tickets, event);
+    const { createdTickets, event } = nextProps;
+    event && this.checkAvailableTickets(createdTickets, event);
     this.setState({ toggleSellPrice: false });
   }
 
@@ -117,7 +117,7 @@ class EventDetails extends Component {
 EventDetails.PropTypes = {
   event: PropTypes.object.isRequired,
   onSellTicket: PropTypes.func,
-  tickets: PropTypes.array,
+  createdTickets: PropTypes.array,
 }
 
 export default EventDetails;

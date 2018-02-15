@@ -9,10 +9,6 @@ import { fetchTickets } from '../../redux/ticket.js';
 import { WEB3_INITIALIZED } from '../../redux/web3';
 
 class Tickets extends Component {
-  constructor(props, { authData }) {
-    super(props);
-    authData = this.props;
-  }
 
   componentDidMount() {
     this.props.onFetchTickets(0);
@@ -26,7 +22,7 @@ class Tickets extends Component {
   }
 
   render() {
-    const { events, selectedEvent, tickets } = this.props;
+    const { events, selectedEvent, created } = this.props;
 
     return(
       <main className="container">
@@ -34,7 +30,7 @@ class Tickets extends Component {
           <div className="pure-u-1-1">
             {/* <SellTicketFormContainer/> */}
             <SearchEvents events={events} />            
-            <EventDetailsContainer event={selectedEvent} tickets={tickets}/>
+            <EventDetailsContainer event={selectedEvent} createdTickets={created}/>
             {/*<TicketListContainer { ...this.props }/>*/}
           </div>
         </div>
@@ -48,7 +44,7 @@ const mapStateToProps = (state) => {
 
   return {
       web3loading, 
-      tickets: state.ticket.data,
+      created: state.ticket.status.created,
       user: state.user.data,
       events: state.events.data,
       selectedEvent: state.events.selected,
@@ -63,8 +59,8 @@ Tickets.PropTypes = {
   onFetchTickets: PropTypes.func,
   events: PropTypes.object,
   user: PropTypes.object,
-  tickets: PropTypes.array,
+  created: PropTypes.array,
   web3loading: PropTypes.bool,
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Tickets);
