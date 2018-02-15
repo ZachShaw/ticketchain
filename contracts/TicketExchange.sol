@@ -53,6 +53,12 @@ contract TicketExchange is Killable {
     _;
   }
 
+  modifier isLockedTicket(uint _id) {
+    Ticket storage ticket = tickets[_id];
+    require(ticket.status == TicketStatus.Locked);
+    _;
+  }
+
   function getEnumValue(TicketStatus status) 
     public 
     pure
@@ -126,9 +132,9 @@ contract TicketExchange is Killable {
   function confirmTicket(uint _id)
     public
     onlyBuyer(_id)
+    isLockedTicket(_id)
   {
     Ticket storage ticket = tickets[_id];
-    require(ticket.status == TicketStatus.Locked);
     ticket.status = TicketStatus.Complete;
     ticket.seller.transfer(ticket.price);
     ticketStatus = getEnumValue(TicketStatus.Complete);
@@ -138,9 +144,9 @@ contract TicketExchange is Killable {
   function refundTicket(uint _id)
     public
     onlySeller(_id)
+    isLockedTicket(_id)
   {
     Ticket storage ticket = tickets[_id];
-    require(ticket.status == TicketStatus.Locked);
     ticket.status = TicketStatus.Refunded;
     ticket.buyer.transfer(ticket.price);
     ticketStatus = getEnumValue(TicketStatus.Refunded);
