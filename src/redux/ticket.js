@@ -34,7 +34,7 @@ export function sellTicket(eventId, eventName, price) {
 
           ticketExchangeInstance.sellTicket(eventId, eventName, _price, {from: coinbase})
           .then(function(result) {
-            return dispatch(fetchTickets())
+            return dispatch(fetchTickets(0))
           })
           .catch(function(result) {
             // If error...
@@ -47,10 +47,9 @@ export function sellTicket(eventId, eventName, price) {
   }
 }
 
-export function fetchTickets() {
+// status 0: Created, 1: Locked, 2: Complete, 3: Refunded, 4: Cancelled
+export function fetchTickets(status) {
   let web3 = store.getState().web3.web3Instance
-
-  // Double-check web3's status.
   if (typeof web3 !== 'undefined') {
     return function(dispatch) {
 
@@ -63,9 +62,9 @@ export function fetchTickets() {
       ticketExchange.deployed().then((instance) => {
       ticketExchangeInstance = instance;
       
-      return ticketExchangeInstance.getTicketsForSale();
+      return ticketExchangeInstance.getTicketsByStatus(status);
       }).then((ticketIds) => {
-        var ticketsForSale = [];
+        var ticketsArr = [];
         ticketIds.forEach((id, i) => {
           var ticketId = id.toNumber();
           ticketExchangeInstance.tickets(ticketId)
@@ -81,9 +80,9 @@ export function fetchTickets() {
                 eventName: ticket[4],
                 price: web3.fromWei(ticket[5].toNumber())
               }
-              ticketsForSale.push(ticketObj);
+              ticketsArr.push(ticketObj);
               if (i === ticketIds.length - 1) {
-                dispatch(fetchTicketActions.success(ticketsForSale))
+                dispatch(fetchTicketActions.success(ticketsArr))
               }
             });
           })

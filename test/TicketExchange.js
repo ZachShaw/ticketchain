@@ -203,5 +203,15 @@ contract('TicketExchange', (accounts) => {
         assert.equal(web3.toUtf8(args._status), "cancelled", "expect ticketStatus to equal cancelled");
       })
     })
+  }),
+
+  it('should get all tickets associated with particular wallet address', () => {
+    return TicketExchange.deployed().then((instance) => {
+      appInstance = instance
+
+      return appInstance.getTicketsByUser(buyer)
+    }).then((data) => {
+      assert.equal(data.length, 2, "expect two tickets to be associated with user");
+    })
   });
 });

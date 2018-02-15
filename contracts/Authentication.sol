@@ -13,6 +13,8 @@ contract Authentication is Killable {
 
   uint private id; // Stores user id temporarily
 
+  event Signup();
+
   modifier onlyExistingUser {
     // Check if user exists or terminate
 
@@ -50,7 +52,7 @@ contract Authentication is Killable {
     // If yes, return user name.
     // If no, check if name was sent.
     // If yes, create and return user.
-
+    Signup();
     if (users[msg.sender].name == 0x0) {
         users[msg.sender].name = name;
         users[msg.sender].email = email;

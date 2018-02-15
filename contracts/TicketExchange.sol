@@ -157,8 +157,25 @@ contract TicketExchange is Killable {
     TicketRefunded(ticketStatus);
   }
 
-  function getNumberOfTickets() public constant returns (uint) {
+  function getNumberOfTickets() 
+    public 
+    constant returns (uint) 
+  {
     return ticketCounter;
+  }
+
+  function getFilteredTickets(uint numberOfTickets, uint[] ticketIds)
+    public
+    pure
+    returns (uint[])
+  {
+    uint[] memory filteredTickets = new uint[](numberOfTickets);
+
+    for (uint j = 0; j < numberOfTickets; j++) {
+      filteredTickets[j] = ticketIds[j];
+    }
+
+    return(filteredTickets);
   }
 
   function getTicketsByStatus(uint _index)
@@ -179,14 +196,24 @@ contract TicketExchange is Killable {
         numberOfTickets++;
       }
     }
-
-    // New array just for tickets that match status
-    uint[] memory filteredTickets = new uint[](numberOfTickets);
-
-    for (uint j = 0; j < numberOfTickets; j++) {
-      filteredTickets[j] = ticketIds[j];
-    }
-    
-    return (filteredTickets);
+    return (getFilteredTickets(numberOfTickets, ticketIds));
   }
+
+  function getTicketsByUser(address user)
+    public
+    view
+    returns (uint[])
+  {
+    uint[] memory ticketIds = new uint[](ticketCounter);
+    uint numberOfTickets = 0;
+
+    for (uint i = 1; i <= ticketCounter; i++) {
+      if (tickets[i].buyer == user || tickets[i].seller == user) {
+        ticketIds[numberOfTickets] = tickets[i].id;
+        numberOfTickets++;
+      }
+    }
+    return (getFilteredTickets(numberOfTickets, ticketIds));
+  }
+
  }
