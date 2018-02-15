@@ -152,7 +152,7 @@ contract('TicketExchange', (accounts) => {
     }).then(assert.fail)
     .catch((error) => {
     }).then(() => {
-      return appInstance.getLockedTickets();
+      return appInstance.getTicketsByStatus(1);
     }).then((data) => {
       assert.equal(data.length, 1, "expect only one ticket to be locked");
     });
@@ -168,7 +168,7 @@ contract('TicketExchange', (accounts) => {
     }).then(assert.fail)
     .catch((error) => {
     }).then(() => {
-      return appInstance.getLockedTickets();
+      return appInstance.getTicketsByStatus(1);
     }).then((data) => {
       assert.equal(data.length, 1, "expect only one ticket to be locked");
     });

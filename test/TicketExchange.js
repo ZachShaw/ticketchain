@@ -123,10 +123,10 @@ contract('TicketExchange', (accounts) => {
 
       assert(buyerBalanceAfter <= buyerBalanceBefore - web3.fromWei(ticketPrice1), "buyer should have spent " + web3.fromWei(ticketPrice1) + "ETH");
 
-      return appInstance.getTicketsForSale();
+      return appInstance.getTicketsByStatus(0);
     }).then((data) => {
       assert.equal(data.length, 1, "expect only one ticket to still be on sale");
-      return appInstance.getLockedTickets();
+      return appInstance.getTicketsByStatus(1);
     }).then((data) => {
       assert.equal(data.length, 1, "expect only one ticket to be locked");
     })
@@ -149,7 +149,7 @@ contract('TicketExchange', (accounts) => {
       assert.equal(web3.toUtf8(args._status), "complete", "ticket status to be updated to complete");
       assert(sellerBalanceAfter >= sellerBalanceBefore + web3.fromWei(ticketPrice1), "seller should have earnt " + web3.fromWei(ticketPrice1) + "ETH");
       
-      return appInstance.getLockedTickets();
+      return appInstance.getTicketsByStatus(1);
     }).then((data) => {
       assert.equal(data.length, 0, "expect no tickets to be locked");
     })
@@ -166,7 +166,7 @@ contract('TicketExchange', (accounts) => {
         from: buyer,
         value: ticketPrice2
       });
-      return appInstance.getLockedTickets();
+      return appInstance.getTicketsByStatus(1);
     }).then((data) => {
       assert.equal(data.length, 1, "expect only one ticket to be locked");
 

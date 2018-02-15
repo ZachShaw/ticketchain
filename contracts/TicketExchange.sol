@@ -1,4 +1,4 @@
-pragma solidity ^0.4.11;
+pragma solidity ^0.4.18;
 
 import './zeppelin/lifecycle/Killable.sol';
 
@@ -7,8 +7,7 @@ contract TicketExchange is Killable {
   // State variables
   mapping(uint => Ticket) public tickets;
   uint ticketCounter;
-  enum TicketStatus { Created, Locked, Complete, Refunded, Cancelled }
-  TicketStatus public state;
+  enum TicketStatus { Created, Locked, Complete, Refunded, Cancelled } // { 0, 1, 2, 3, 4 }
   bytes32 ticketStatus;
 
   struct Ticket {
@@ -162,49 +161,32 @@ contract TicketExchange is Killable {
     return ticketCounter;
   }
 
-  function getLockedTickets() public constant returns (uint[]) {
+  function getTicketsByStatus(uint _index)
+    public
+    view
+    returns (uint[])
+  {
     noTickets();
+    TicketStatus ts;
+    ts = TicketStatus(_index);
 
     uint[] memory ticketIds = new uint[](ticketCounter);
-    uint numberOfLockedTickets = 0;
+    uint numberOfTickets = 0;
 
     for (uint i = 1; i <= ticketCounter; i++) {
-      if (tickets[i].status == TicketStatus.Locked) {
-        ticketIds[numberOfLockedTickets] = tickets[i].id;
-        numberOfLockedTickets++;
+      if (tickets[i].status == ts) {
+        ticketIds[numberOfTickets] = tickets[i].id;
+        numberOfTickets++;
       }
     }
 
-    // New array just for tickets that have been locked and require an action
-    uint[] memory lockedTickets = new uint[](numberOfLockedTickets);
+    // New array just for tickets that match status
+    uint[] memory filteredTickets = new uint[](numberOfTickets);
 
-    for (uint j = 0; j < numberOfLockedTickets; j++) {
-      lockedTickets[j] = ticketIds[j];
+    for (uint j = 0; j < numberOfTickets; j++) {
+      filteredTickets[j] = ticketIds[j];
     }
     
-    return (lockedTickets);
-  }
-
-  function getTicketsForSale() public constant returns (uint[]) {
-    noTickets();
-
-    uint[] memory ticketIds = new uint[](ticketCounter);
-    uint numberOfTicketsForSale = 0;
-
-    for (uint i = 1; i <= ticketCounter; i++) {
-      if (tickets[i].buyer == 0x0) {
-        ticketIds[numberOfTicketsForSale] = tickets[i].id;
-        numberOfTicketsForSale++;
-      }
-    }
-
-    // New array just for tickets that have not been sold yet
-    uint[] memory ticketsForSale = new uint[](numberOfTicketsForSale);
-
-    for (uint j = 0; j < numberOfTicketsForSale; j++) {
-      ticketsForSale[j] = ticketIds[j];
-    }
-    
-    return (ticketsForSale);
+    return (filteredTickets);
   }
  }
