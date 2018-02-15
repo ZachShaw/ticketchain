@@ -65,28 +65,32 @@ export function fetchTickets(status) {
       return ticketExchangeInstance.getTicketsByStatus(status);
       }).then((ticketIds) => {
         var ticketsArr = [];
-        ticketIds.forEach((id, i) => {
-          var ticketId = id.toNumber();
-          ticketExchangeInstance.tickets(ticketId)
-          .then((ticket) => {
-            let user;
-            fetchUser(ticket[1]).then((r) => user = r).finally(() => {
-              var ticketObj = {
-                ticketId: ticket[0].toNumber(),
-                seller: ticket[1],
-                user,
-                buyer: ticket[2],
-                eventId: ticket[3],
-                eventName: ticket[4],
-                price: web3.fromWei(ticket[5].toNumber())
-              }
-              ticketsArr.push(ticketObj);
-              if (i === ticketIds.length - 1) {
-                dispatch(fetchTicketActions.success(ticketsArr))
-              }
-            });
+        if (ticketIds.length) {
+          ticketIds.forEach((id, i) => {
+            var ticketId = id.toNumber();
+            ticketExchangeInstance.tickets(ticketId)
+            .then((ticket) => {
+              let user;
+              fetchUser(ticket[1]).then((r) => user = r).finally(() => {
+                var ticketObj = {
+                  ticketId: ticket[0].toNumber(),
+                  seller: ticket[1],
+                  user,
+                  buyer: ticket[2],
+                  eventId: ticket[3],
+                  eventName: ticket[4],
+                  price: web3.fromWei(ticket[5].toNumber())
+                }
+                ticketsArr.push(ticketObj);
+                if (i === ticketIds.length - 1) {
+                  dispatch(fetchTicketActions.success(ticketsArr))
+                }
+              });
+            })
           })
-        })
+        } else {
+          dispatch(fetchTicketActions.success([]))
+        }
       }).catch((error) => {
         console.log(error);
       })

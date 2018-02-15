@@ -15,13 +15,13 @@ class Tickets extends Component {
   }
 
   componentDidMount() {
-    this.props.onFetchTickets();
+    this.props.onFetchTickets(0);
   }
 
   componentWillReceiveProps(nextProps) {
-    const { web3loading, onFetchTickets, tickets } = this.props;
-    if (web3loading !== nextProps.web3loading || !tickets.length) {
-      onFetchTickets();
+    const { web3loading, onFetchTickets } = this.props;
+    if (web3loading !== nextProps.web3loading) {
+      onFetchTickets(0);
     }
   }
 
@@ -56,7 +56,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  onFetchTickets: () => dispatch(fetchTickets())
+  onFetchTickets: (status) => dispatch(fetchTickets(status))
 });
 
 Tickets.PropTypes = {
