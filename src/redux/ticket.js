@@ -124,7 +124,7 @@ export function buyTicket(ticketId, price) {
           })
         })
       }).then(() => {
-        dispatch(fetchTickets());
+        dispatch(fetchTickets(0));
       })
     }
   }
