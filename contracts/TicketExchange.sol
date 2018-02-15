@@ -53,16 +53,6 @@ contract TicketExchange is Killable {
     _;
   }
 
-  function noTickets()
-    public
-    view
-    returns (uint[]) 
-  {
-    if (ticketCounter == 0) {
-      return new uint[](0);
-    }
-  }
-
   function getEnumValue(TicketStatus status) 
     public 
     pure
@@ -183,7 +173,9 @@ contract TicketExchange is Killable {
     view
     returns (uint[])
   {
-    noTickets();
+    if (ticketCounter == 0) 
+      return new uint[](0);
+    
     TicketStatus ts;
     ts = TicketStatus(_index);
 
@@ -204,6 +196,9 @@ contract TicketExchange is Killable {
     view
     returns (uint[])
   {
+    if (ticketCounter == 0) 
+      return new uint[](0);
+
     uint[] memory ticketIds = new uint[](ticketCounter);
     uint numberOfTickets = 0;
 
