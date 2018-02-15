@@ -165,7 +165,7 @@ contract TicketExchange is Killable {
       filteredTickets[j] = ticketIds[j];
     }
 
-    return(filteredTickets);
+    return (filteredTickets);
   }
 
   function getTicketsByStatus(uint _index)
