@@ -2,19 +2,23 @@
 let TicketExchange = artifacts.require("./TicketExchange.sol");
 
 contract('TicketExchange', (accounts) => {
-  let appInstance;
-  let seller = accounts[2];
-  let buyer = accounts[1];
-  let ticketId1 = 1;
-  let ticketId2 = 2;
-  let eventId1 = 'EV001';
-  let eventId2 = 'EV002';
-  let eventName1 = 'Willers Brothers Live';
-  let eventName2 = 'Lauren Lo Sung Presents..'
-  let ticketPrice1 = web3.toWei(5, "ether");
-  let ticketPrice2 = web3.toWei(10, "ether");
-  let buyerBalanceBefore, buyerBalanceAfter;
-  let sellerBalanceBefore, sellerBalanceAfter;
+  let appInstance,
+      seller = accounts[2],
+      buyer = accounts[1],
+      ticketId1 = 1,
+      ticketId2 = 2,
+      ticketId3 = 3,
+      eventId1 = 'EV001',
+      eventId2 = 'EV002',
+      eventId3 = 'EV003',
+      eventName1 = 'Willers Brothers Live',
+      eventName2 = 'Lauren Lo Sung Presents..',
+      eventName3 = 'Hunee All Night..',
+      ticketPrice1 = web3.toWei(5, "ether"),
+      ticketPrice2 = web3.toWei(10, "ether"),
+      ticketPrice3 = web3.toWei(2, "ether"),
+      buyerBalanceBefore, buyerBalanceAfter,
+      sellerBalanceBefore, sellerBalanceAfter;
 
   it('should list be initialized with empty values', () => {
     return TicketExchange.deployed().then((instance) => {
@@ -126,7 +130,7 @@ contract('TicketExchange', (accounts) => {
     }).then((data) => {
       assert.equal(data.length, 1, "expect only one ticket to be locked");
     })
-  })
+  }),
 
   it('should confirm ticket as valid from the buyer and release payment to the seller', () => {
     return TicketExchange.deployed().then((instance) => {
@@ -138,15 +142,18 @@ contract('TicketExchange', (accounts) => {
         from: buyer
       });
     }).then((receipt) => {
+      const logs = receipt.logs;
+      const args = logs[0].args;
+
       sellerBalanceAfter = web3.fromWei(web3.eth.getBalance(seller), "ether").toNumber();
-      assert.equal(receipt.logs.length, 1, "expect to receive one event");
+      assert.equal(web3.toUtf8(args._status), "complete", "ticket status to be updated to complete");
       assert(sellerBalanceAfter >= sellerBalanceBefore + web3.fromWei(ticketPrice1), "seller should have earnt " + web3.fromWei(ticketPrice1) + "ETH");
       
       return appInstance.getLockedTickets();
     }).then((data) => {
       assert.equal(data.length, 0, "expect no tickets to be locked");
     })
-  })
+  }),
 
   it('should refund purchase of second ticket back to the buyers account', () => {
     return TicketExchange.deployed().then((instance) => {
@@ -168,10 +175,33 @@ contract('TicketExchange', (accounts) => {
       });
     }).then((receipt) => {
       buyerBalanceAfter = web3.fromWei(web3.eth.getBalance(buyer), "ether").toNumber();
-
-      assert.equal(receipt.logs.length, 1, "expect to receive one event");
+      const logs = receipt.logs;
+      const args = logs[0].args;
+      assert.equal(web3.toUtf8(args._status), "refunded", "ticket status to be updated to refunded");
 
       assert(buyerBalanceAfter > buyerBalanceMinusGas && buyerBalanceAfter < buyerBalanceBefore, "buyer should received a refund within 99% of original price paid");
     })
-  })
+  }),
+
+  it('should sell and cancel a third ticket from the seller', () => {
+    return TicketExchange.deployed().then((instance) => {
+      appInstance = instance
+
+      return appInstance.sellTicket(eventId3, eventName3, ticketPrice3, {
+        from: seller
+      }).then((receipt) => {
+        const logs = receipt.logs;
+        const args = logs[0].args;
+        assert.equal(web3.toUtf8(args._status), "created", "expect ticketStatus to equal created");
+        
+        return appInstance.cancelTicket(ticketId3, {
+          from: seller
+        });
+      }).then((receipt) => {
+        const logs = receipt.logs;
+        const args = logs[0].args;
+        assert.equal(web3.toUtf8(args._status), "cancelled", "expect ticketStatus to equal cancelled");
+      })
+    })
+  });
 });

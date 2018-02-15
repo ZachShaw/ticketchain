@@ -3,13 +3,13 @@ let TicketExchange = artifacts.require("./TicketExchange.sol");
 
 contract('TicketExchange', (accounts) => {
   let appInstance;
-  let seller = accounts[1];
-  let buyer = accounts[2];
-  let ticketId = 1;
-  let eventId = 'EV001';
-  let eventName = 'Dimensions Festival 2018';
-  let ticketPrice = 0.5;
-  let weiPrice = web3.toWei(ticketPrice, "ether");
+      seller = accounts[1],
+      buyer = accounts[2],
+      ticketId = 1,
+      eventId = 'EV001',
+      eventName = 'Dimensions Festival 2018',
+      ticketPrice = 0.5,
+      weiPrice = web3.toWei(ticketPrice, "ether");
 
   it("should throw an exception if buyer tries to buy a ticket when none are for sale", () => {
     return TicketExchange.deployed().then((instance) => {

@@ -7,7 +7,7 @@ contract TicketExchange is Killable {
   // State variables
   mapping(uint => Ticket) public tickets;
   uint ticketCounter;
-  enum TicketStatus { Created, Locked, Closed }
+  enum TicketStatus { Created, Locked, Complete, Refunded, Cancelled }
   TicketStatus public state;
   bytes32 ticketStatus;
 
@@ -73,8 +73,12 @@ contract TicketExchange is Killable {
       return "created";
     if (TicketStatus.Locked == status) 
       return "locked";
-    if (TicketStatus.Closed == status)
-      return "closed";
+    if (TicketStatus.Complete == status)
+      return "complete";
+    if (TicketStatus.Refunded == status)
+      return "refunded";
+    if (TicketStatus.Cancelled == status)
+      return "cancelled";
     return "";
   }
 
@@ -83,8 +87,8 @@ contract TicketExchange is Killable {
     onlySeller(_id)
   {
       Ticket storage ticket = tickets[_id];
-      ticket.status = TicketStatus.Closed;
-      ticketStatus = getEnumValue(TicketStatus.Closed);
+      ticket.status = TicketStatus.Cancelled;
+      ticketStatus = getEnumValue(TicketStatus.Cancelled);
       TicketCancelled(ticketStatus);
   }
 
@@ -136,9 +140,9 @@ contract TicketExchange is Killable {
   {
     Ticket storage ticket = tickets[_id];
     require(ticket.status == TicketStatus.Locked);
-    ticket.status = TicketStatus.Closed;
+    ticket.status = TicketStatus.Complete;
     ticket.seller.transfer(ticket.price);
-    ticketStatus = getEnumValue(TicketStatus.Closed);
+    ticketStatus = getEnumValue(TicketStatus.Complete);
     TicketConfirmed(ticketStatus);
   }
 
@@ -148,9 +152,9 @@ contract TicketExchange is Killable {
   {
     Ticket storage ticket = tickets[_id];
     require(ticket.status == TicketStatus.Locked);
-    ticket.status = TicketStatus.Closed;
+    ticket.status = TicketStatus.Refunded;
     ticket.buyer.transfer(ticket.price);
-    ticketStatus = getEnumValue(TicketStatus.Closed);
+    ticketStatus = getEnumValue(TicketStatus.Refunded);
     TicketRefunded(ticketStatus);
   }
 
