@@ -12,6 +12,7 @@ import App from './App'
 import Home from './layouts/home/Home'
 import Dashboard from './layouts/dashboard/Dashboard'
 import Tickets from './tickets/layouts/Tickets'
+import Manage from './tickets/layouts/Manage'
 import SignUp from './user/layouts/signup/SignUp'
 import Profile from './user/layouts/profile/Profile'
 
@@ -42,6 +43,7 @@ persistStore(store, {
           <Route path="signup" component={UserIsNotAuthenticated(SignUp)} />
           <Route path="profile" component={UserIsAuthenticated(Profile)} />
           <Route path="tickets" component={UserIsAuthenticated(Tickets)} />
+          <Route path="manage" component={UserIsAuthenticated(Manage)} />
         </Route>
       </Router>
     </Provider>

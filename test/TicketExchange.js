@@ -64,6 +64,16 @@ contract('TicketExchange', (accounts) => {
     })
   }),
 
+  it('should have no tickets associated with buyer wallet address', () => {
+    return TicketExchange.deployed().then((instance) => {
+      appInstance = instance
+
+      return appInstance.getTicketsByUser(seller)
+    }).then((data) => {
+      assert.equal(data.length, 0, "expect two tickets to be associated with user");
+    })
+  }),
+
   it('should sell the second ticket', () => {
     return TicketExchange.deployed().then((instance) => {
       appInstance = instance

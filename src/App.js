@@ -4,8 +4,8 @@ import { HiddenOnlyAuth, VisibleOnlyAuth } from './util/wrappers.js'
 import { connect } from 'react-redux';
 
 // UI Components
-import LoginButtonContainer from './user/ui/loginbutton/LoginButtonContainer'
-import LogoutButtonContainer from './user/ui/logoutbutton/LogoutButtonContainer'
+import LoginButtonContainer from './user/components/loginbutton/LoginButtonContainer'
+import LogoutButtonContainer from './user/components/logoutbutton/LogoutButtonContainer'
 
 // Styles
 import './css/oswald.css'
@@ -29,7 +29,7 @@ class App extends Component {
           <Link to="/tickets" className="pure-menu-link">Tickets</Link>
         </li>
         <li className="pure-menu-item">
-          <Link to="/dashboard" className="pure-menu-link">Dashboard</Link>
+          <Link to="/manage" className="pure-menu-link">Manage</Link>
         </li>
         <li className="pure-menu-item">
           <Link to="/profile" className="pure-menu-link">Profile</Link>

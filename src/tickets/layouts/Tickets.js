@@ -1,23 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import SellTicketFormContainer from '../ui/sellticketform/SellTicketFormContainer';
-import EventDetailsContainer from '../ui/eventdetails/EventDetailsContainer';
-// import TicketListContainer from '../ui/ticketlist/TicketListContainer';
-import SearchEvents from '../ui/searchevents/SearchEventsContainer';
+// import SellTicketFormContainer from '../componentsui/sellticketform/SellTicketFormContainer';
+import EventDetailsContainer from '../components/eventdetails/EventDetailsContainer';
+// import TicketListContainer from '../components/ticketlist/TicketListContainer';
+import SearchEvents from '../components/searchevents/SearchEventsContainer';
 import { fetchTickets } from '../../redux/ticket.js';
 import { WEB3_INITIALIZED } from '../../redux/web3';
 
 class Tickets extends Component {
 
   componentDidMount() {
-    this.props.onFetchTickets(0);
+    this.props.fetchCreatedTickets(0);
   }
 
   componentWillReceiveProps(nextProps) {
-    const { web3loading, onFetchTickets } = this.props;
+    const { web3loading, fetchCreatedTickets } = this.props;
     if (web3loading !== nextProps.web3loading) {
-      onFetchTickets(0);
+      fetchCreatedTickets(0);
     }
   }
 
@@ -52,11 +52,11 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  onFetchTickets: (status) => dispatch(fetchTickets(status))
+  fetchCreatedTickets: (status) => dispatch(fetchTickets(status))
 });
 
 Tickets.PropTypes = {
-  onFetchTickets: PropTypes.func,
+  fetchCreatedTickets: PropTypes.func,
   events: PropTypes.object,
   user: PropTypes.object,
   created: PropTypes.array,

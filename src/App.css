@@ -33,6 +33,7 @@ code {
   position: fixed;
   padding: 5px;
   background: #0c1a2b;
+  z-index: 1000;
   font-family: 'Oswald', 'Arial Narrow', sans-serif; }
 
 .navbar a {

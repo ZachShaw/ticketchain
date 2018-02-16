@@ -214,6 +214,10 @@ contract TicketExchange is Killable {
         numberOfTickets++;
       }
     }
+
+    if (i == 1)
+      return new uint[](0);
+
     return (getFilteredTickets(numberOfTickets, ticketIds));
   }
 
