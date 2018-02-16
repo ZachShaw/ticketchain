@@ -5,33 +5,44 @@ import { WEB3_INITIALIZED } from '../../redux/web3';
 import { usersTickets } from '../../redux/ticket.js';
 import Tabs from '../../components/Tabs';
 import TabPanel from '../../components/TabPanel';
+import ManageTickets from '../components/managetickets/ManageTicketsContainer'
 
 class Manage extends Component {
+  constructor(props) {
+    super(props);
 
+    this.state = {
+      filteredTickets: []
+    }
+
+    this.tabItems = ['selling', 'bought']
+  }
   componentDidMount() {
-    this.props.fetchUsersTickets(0);
+    this.props.fetchUsersTickets();
   }
 
   componentWillReceiveProps(nextProps) {
     const { web3loading, fetchUsersTickets } = this.props;
     if (web3loading !== nextProps.web3loading) {
-      fetchUsersTickets(0);
+      fetchUsersTickets();
     }
   }
 
   render() {
+    const { usersTickets } = this.props;
     return(
       <main className="container">
         <div className="pure-g">
           <div className="pure-u-1-1">
             <h2>Manage Your Tickets</h2>
             <Tabs>
-              <TabPanel title="Bought">
-                <h3>BOUGHT</h3>
-              </TabPanel>
-              <TabPanel title="Selling">
-                <h3>SELLING</h3>
-              </TabPanel>
+              {this.tabItems.map((item) => {
+                return (
+                  <TabPanel key={item} title={item}>
+                    <ManageTickets type={item} usersTickets={usersTickets}/>
+                  </TabPanel>
+                )
+              })}
             </Tabs>
           </div>
         </div>

@@ -20,7 +20,6 @@ class EventDetails extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // Compare props with next props to see if anything needs firing
     const { createdTickets, event } = nextProps;
     event && this.checkAvailableTickets(createdTickets, event);
     this.setState({ toggleSellPrice: false });

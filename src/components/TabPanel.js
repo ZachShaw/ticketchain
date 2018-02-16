@@ -2,10 +2,8 @@ import React, { Children } from 'react';
 import PropTypes from 'prop-types';
 
 const TabPanel = ({ children, selected }) =>
-  <div>
-    {Children.map(children, (child, i) =>
-      <div key={i}>{child}</div>
-    )}
+  <div style={{width: '100%'}}>
+    { Children.map(children, (child, i) => child )}
   </div>
 ;
 

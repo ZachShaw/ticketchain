@@ -13,10 +13,11 @@ class Tabs extends Component {
     this.handleTabClick = this.handleTabClick.bind(this);
   }
 
-  handleTabClick(index) {
+  handleTabClick(index, title) {
     this.setState({
       selectedTabIndex: index
     })
+
   }
 
   render() {
@@ -30,7 +31,7 @@ class Tabs extends Component {
             const { title } = child.props;
             if (!title) return null;
             return (
-              <li onClick={() => this.handleTabClick(i)}>
+              <li onClick={() => this.handleTabClick(i, title)}>
                 <span>{title}</span>
               </li>
             );
@@ -40,11 +41,7 @@ class Tabs extends Component {
           {Children.map(children, (child, i) => {
             const showTab = this.state.selectedTabIndex === i;
             if (!showTab) return null;
-            return (
-              <div>
-                {child}
-              </div>
-            );
+            return child;
           })}
         </ul>
       </div>
@@ -54,10 +51,12 @@ class Tabs extends Component {
 
 Tabs.propTypes = {
   selectedTab: PropTypes.number,
+  onTabClick: PropTypes.func,
 };
 
 Tabs.defaultProps = {
   selectedTab: 0,
+  onTabClick: () => {},
 };
 
 export default Tabs;

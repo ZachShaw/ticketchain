@@ -1,4 +1,17 @@
+.tabs--container {
+  padding-top: 20px;
+}
+
 .tabs--container > ul {
   padding: 0;
   list-style: none;
+  display: flex;
+}
+
+.tabs--container > ul > li {
+  width: 200px;
+  border: 1px solid black;
+  padding: 10px 0;
+  cursor: pointer;
+  text-align: center;
 }
