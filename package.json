@@ -68,6 +68,7 @@
     "redux-logger": "^3.0.6",
     "redux-persist": "^4.10.2",
     "redux-thunk": "^2.2.0",
+    "reselect": "^3.0.1",
     "web3": "github:ethereum/web3.js"
   },
   "scripts": {

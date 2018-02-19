@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './ManageTickets.css';
-import { convertStatus } from '../../../util/tickets/enumStatus.js';
 
 class ManageTickets extends Component {
   constructor(props) {
@@ -22,16 +21,13 @@ class ManageTickets extends Component {
   }
 
   createTicketList() {
-    // MOVE ALL OF THIS INTO REDUX
-    const { usersTickets, type } = this.props;
-    const filteredTickets = usersTickets.filter((ticket) => {
-      if (type === 'selling') {
-        return ticket.status === convertStatus(type)
-      } else if (type === 'bought') {
-        return ticket.status === convertStatus(type) && ticket.user.username !== 'zshaw'
+    const { sellingTickets, boughtTickets, type } = this.props;
+    const filteredTickets = (() => {
+      switch(type) {
+        default: return sellingTickets;
+        case 'bought': return boughtTickets;
       }
-      return [];
-    });
+    })(type);
 
     return filteredTickets.length ? filteredTickets.map((ticket) => {
       return (

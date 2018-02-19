@@ -1,7 +1,7 @@
 import { handleActions } from 'redux-actions';
 import { fetchActions, fetchSuccess } from './utils.js';
 import { fetchUser } from '../util/user/userUtils.js';
-import { getEnumStatus } from '../util/tickets/enumStatus.js';
+import { getEnumStatus } from '../util/tickets/status.js';
 import store from '../store';
 import TicketExchangeContract from '../../build/contracts/TicketExchange.json';
 
