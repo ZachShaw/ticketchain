@@ -15,17 +15,29 @@ class ManageTickets extends Component {
     const { type } = this.props;
     switch(type) {
       default: return (
-        <div className="pure-button event-tickets--btn">Remove Listing</div>
+        <button className="pure-button event-tickets--btn">Remove Listing</button>
+      )
+      case 'bought': return (
+        <div className="ticketlist--btn-wrapper">
+          <button className="pure-button event-tickets--btn">Confirm</button>
+          <button className="pure-button event-tickets--btn">Request Refund</button>
+        </div>
+      )
+      case 'sold': return (
+        <div className="ticketlist--btn-wrapper">
+          <button className="pure-button event-tickets--btn">Issue Refund</button>
+        </div>
       )
     }
   }
 
   createTicketList() {
-    const { sellingTickets, boughtTickets, type } = this.props;
+    const { sellingTickets, boughtTickets, soldTickets, type } = this.props;
     const filteredTickets = (() => {
       switch(type) {
         default: return sellingTickets;
         case 'bought': return boughtTickets;
+        case 'sold': return soldTickets;
       }
     })(type);
 

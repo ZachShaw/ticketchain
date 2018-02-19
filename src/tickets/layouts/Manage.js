@@ -15,7 +15,7 @@ class Manage extends Component {
       filteredTickets: []
     }
 
-    this.tabItems = ['selling', 'bought']
+    this.tabItems = ['selling', 'bought', 'sold']
   }
   componentDidMount() {
     this.props.fetchUsersTickets();

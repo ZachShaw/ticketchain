@@ -11,6 +11,7 @@ export function getEnumStatus(enumStatus) {
 export function convertStatus(type) {
   switch(type) {
     case 'bought': return "locked";
+    case 'sold': return "locked";
     default: return "created";
   }
 }

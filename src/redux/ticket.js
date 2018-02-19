@@ -2,6 +2,7 @@ import { handleActions } from 'redux-actions';
 import { fetchActions, fetchSuccess } from './utils.js';
 import { fetchUser } from '../util/user/userUtils.js';
 import { getEnumStatus } from '../util/tickets/status.js';
+import { createTicket } from '../util/tickets/format.js';
 import store from '../store';
 import TicketExchangeContract from '../../build/contracts/TicketExchange.json';
 
@@ -17,30 +18,22 @@ export function sellTicket(eventId, eventName, price) {
   let web3 = store.getState().web3.web3Instance;
   let _price = web3.toWei(price, "ether");
 
-  // Double-check web3's status.
   if (typeof web3 !== 'undefined') {
-
     return (dispatch) => {
       const ticketExchange = contract(TicketExchangeContract);
       ticketExchange.setProvider(web3.currentProvider);
 
       var ticketExchangeInstance;
 
-      // Get current ethereum wallet.
       web3.eth.getCoinbase((error, coinbase) => {
-        if (error) {
-          console.error(error);
-        }
-
+        if (error) console.error(error)
         ticketExchange.deployed().then((instance) => {
           ticketExchangeInstance = instance;
-
           ticketExchangeInstance.sellTicket(eventId, eventName, _price, {from: coinbase})
           .then(() => {
             return dispatch(fetchTickets(0));
           })
           .catch(() => {
-            // If error...
           });
         });
       });
@@ -59,7 +52,6 @@ export function fetchTickets(status) {
       dispatch(fetchTicketActions.started());
       const ticketExchange = contract(TicketExchangeContract);
       ticketExchange.setProvider(web3.currentProvider);
-
       var ticketExchangeInstance;
 
       ticketExchange.deployed().then((instance) => {
@@ -75,15 +67,7 @@ export function fetchTickets(status) {
             .then((ticket) => {
               let user;
               fetchUser(ticket[1]).then((r) => user = r).finally(() => {
-                var ticketObj = {
-                  ticketId: ticket[0].toNumber(),
-                  seller: ticket[1],
-                  user,
-                  buyer: ticket[2],
-                  eventId: ticket[3],
-                  eventName: ticket[4],
-                  price: web3.fromWei(ticket[5].toNumber())
-                };
+                var ticketObj = createTicket(ticket, user)
                 ticketsArr.push(ticketObj);
                 if (i === ticketIds.length - 1) {
                   let res = { tickets: ticketsArr, status: getEnumStatus(ticket[6].toNumber())};
@@ -110,7 +94,6 @@ export function usersTickets() {
       dispatch(fetchUsersTickets.started());
       const ticketExchange = contract(TicketExchangeContract);
       ticketExchange.setProvider(web3.currentProvider);
-
       var ticketExchangeInstance;
 
       ticketExchange.deployed().then((instance) => {
@@ -128,16 +111,7 @@ export function usersTickets() {
                 .then((ticket) => {
                   let user;
                   fetchUser(ticket[1]).then((r) => user = r).finally(() => {
-                    var ticketObj = {
-                      ticketId: ticket[0].toNumber(),
-                      seller: ticket[1],
-                      user,
-                      buyer: ticket[2],
-                      eventId: ticket[3],
-                      eventName: ticket[4],
-                      price: web3.fromWei(ticket[5].toNumber()),
-                      status: getEnumStatus(ticket[6].toNumber()),
-                    };
+                    var ticketObj = createTicket(ticket, user);
                     ticketsArr.push(ticketObj);
                     if (i === ticketIds.length - 1) {
                       dispatch(fetchUsersTickets.success(ticketsArr));
@@ -159,12 +133,10 @@ export function usersTickets() {
 
 export function buyTicket(ticketId, price) {
   let web3 = store.getState().web3.web3Instance;
-
   if (typeof web3 !== 'undefined') {
     return (dispatch) => {
       const ticketExchange = contract(TicketExchangeContract);
       ticketExchange.setProvider(web3.currentProvider);
-
       var ticketExchangeInstance;
 
       ticketExchange.deployed()
@@ -172,9 +144,7 @@ export function buyTicket(ticketId, price) {
         ticketExchangeInstance = instance;
 
         web3.eth.getCoinbase((error, coinbase) => {
-          if (error) {
-            console.error(error);
-          }
+          if (error) console.error(error)
 
           return ticketExchangeInstance.buyTicket(ticketId, {
             from: coinbase,
@@ -187,7 +157,61 @@ export function buyTicket(ticketId, price) {
       });
     };
   }
-} 
+}
+
+export function confirmTicket(ticketId) {
+  let web3 = store.getState().web3.web3Instance;
+  if (typeof web3 !== 'undefined') {
+    return (dispatch) => {
+      const ticketExchange = contract(TicketExchangeContract);
+      ticketExchange.setProvider(web3.currentProvider);
+      var ticketExchangeInstance;
+
+      ticketExchange.deployed()
+      .then((instance) => {
+        ticketExchangeInstance = instance;
+
+        web3.eth.getCoinbase((error, coinbase) => {
+          if (error) console.error(error)
+
+          return ticketExchangeInstance.confirmTicket(ticketId, {
+            from: coinbase,
+            gas: 500000
+          });
+        });
+      }).then(() => {
+        dispatch(fetchTickets(0));
+      });
+    };
+  }
+}
+
+export function refundTicket(ticketId) {
+  let web3 = store.getState().web3.web3Instance;
+  if (typeof web3 !== 'undefined') {
+    return (dispatch) => {
+      const ticketExchange = contract(TicketExchangeContract);
+      ticketExchange.setProvider(web3.currentProvider);
+      var ticketExchangeInstance;
+
+      ticketExchange.deployed()
+      .then((instance) => {
+        ticketExchangeInstance = instance;
+
+        web3.eth.getCoinbase((error, coinbase) => {
+          if (error) console.error(error)
+
+          return ticketExchangeInstance.refundTicket(ticketId, {
+            from: coinbase,
+            gas: 500000
+          });
+        });
+      }).then(() => {
+        dispatch(fetchTickets(0));
+      });
+    };
+  }
+}
 
 const initialState = {
   // Update this to be object with status properties
