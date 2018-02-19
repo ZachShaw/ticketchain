@@ -261,6 +261,8 @@ export default handleActions({
         user: ticketData
     };
   },
-  [fetchSuccess(SELL_TICKET)]: (state) => state
+  [fetchSuccess(SELL_TICKET)]: (state) => state,
+  [fetchSuccess(CONFIRM_TICKET)]: (state) => state,
+  [fetchSuccess(REFUND_TICKET)]: (state) => state,
 }, initialState);
 
