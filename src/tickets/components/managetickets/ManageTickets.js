@@ -11,33 +11,44 @@ class ManageTickets extends Component {
     this.addButtons = this.addButtons.bind(this);
   }
 
-  addButtons() {
-    const { type } = this.props;
+  addButtons(ticketId) {
+    const { type, onConfirmTicket, onRefundTicket } = this.props;
     switch(type) {
-      default: return (
+      default: return null;
+      case 'selling': return (
         <button className="pure-button event-tickets--btn">Remove Listing</button>
       )
       case 'bought': return (
         <div className="ticketlist--btn-wrapper">
-          <button className="pure-button event-tickets--btn">Confirm</button>
+          <button  className="pure-button event-tickets--btn" onClick={() => onConfirmTicket(ticketId)}>
+            Confirm
+          </button>
           <button className="pure-button event-tickets--btn">Request Refund</button>
         </div>
       )
       case 'sold': return (
         <div className="ticketlist--btn-wrapper">
-          <button className="pure-button event-tickets--btn">Issue Refund</button>
+          <button className="pure-button event-tickets--btn" onClick={() => onRefundTicket(ticketId)}>
+            Issue Refund
+          </button>
         </div>
       )
     }
   }
 
   createTicketList() {
-    const { sellingTickets, boughtTickets, soldTickets, type } = this.props;
+    const { sellingTickets, boughtTickets, soldTickets, 
+      refundedTickets, completeTickets, cancelledTickets, 
+      type 
+    } = this.props;
     const filteredTickets = (() => {
       switch(type) {
         default: return sellingTickets;
         case 'bought': return boughtTickets;
         case 'sold': return soldTickets;
+        case 'refunded': return refundedTickets;
+        case 'complete': return completeTickets;
+        case 'cancelled': return cancelledTickets;
       }
     })(type);
 
@@ -55,11 +66,13 @@ class ManageTickets extends Component {
             <h5 className="ticketlist--wallet">{ticket.seller}</h5>
           </div>
           <div className="event-tickets--btn-cell flex-right">
-            {this.addButtons()}
+            {this.addButtons(ticket.ticketId)}
           </div>
         </li>
       )
-    }) : null
+    }) : <div>
+      <h3>No Tickets :)</h3>
+    </div>
   }
 
   render() {

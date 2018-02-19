@@ -12,6 +12,9 @@ export function convertStatus(type) {
   switch(type) {
     case 'bought': return "locked";
     case 'sold': return "locked";
+    case 'refunded': return "refunded";
+    case 'complete': return "complete";
+    case 'cancelled': return "cancelled";
     default: return "created";
   }
 }

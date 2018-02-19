@@ -11,7 +11,15 @@ const contract = require('truffle-contract');
 export const FETCH_TICKETS = 'ticketchain/ticket/fetch-tickets';
 const fetchTicketActions = fetchActions(FETCH_TICKETS);
 export const FETCH_USERS_TICKETS = 'ticketchain/ticket/fetch-users-tickets';
-const fetchUsersTickets = fetchActions(FETCH_USERS_TICKETS)
+const fetchUsersTickets = fetchActions(FETCH_USERS_TICKETS);
+export const SELL_TICKET = 'ticketchain/ticket/sell-ticket';
+const sellTicketActions = fetchActions(SELL_TICKET);
+export const CONFIRM_TICKET = 'ticketchain/ticket/confirm-ticket';
+const confirmTicketActions = fetchActions(CONFIRM_TICKET);
+export const CANCEL_TICKET = 'ticketchain/ticket/cancel-ticket';
+const cancelTicketActions = fetchActions(CANCEL_TICKET);
+export const REFUND_TICKET = 'ticketchain/ticket/refund-ticket';
+const refundTicketActions = fetchActions(REFUND_TICKET);
 
 
 export function sellTicket(eventId, eventName, price) {
@@ -20,6 +28,7 @@ export function sellTicket(eventId, eventName, price) {
 
   if (typeof web3 !== 'undefined') {
     return (dispatch) => {
+      dispatch(sellTicketActions.started());
       const ticketExchange = contract(TicketExchangeContract);
       ticketExchange.setProvider(web3.currentProvider);
 
@@ -30,6 +39,9 @@ export function sellTicket(eventId, eventName, price) {
         ticketExchange.deployed().then((instance) => {
           ticketExchangeInstance = instance;
           ticketExchangeInstance.sellTicket(eventId, eventName, _price, {from: coinbase})
+          .then(() => {
+            dispatch(sellTicketActions.success());
+          })
           .then(() => {
             return dispatch(fetchTickets(0));
           })
@@ -163,6 +175,7 @@ export function confirmTicket(ticketId) {
   let web3 = store.getState().web3.web3Instance;
   if (typeof web3 !== 'undefined') {
     return (dispatch) => {
+      dispatch(confirmTicketActions.started());
       const ticketExchange = contract(TicketExchangeContract);
       ticketExchange.setProvider(web3.currentProvider);
       var ticketExchangeInstance;
@@ -180,6 +193,8 @@ export function confirmTicket(ticketId) {
           });
         });
       }).then(() => {
+        dispatch(confirmTicketActions.success());
+      }).then(() => {
         dispatch(fetchTickets(0));
       });
     };
@@ -190,6 +205,7 @@ export function refundTicket(ticketId) {
   let web3 = store.getState().web3.web3Instance;
   if (typeof web3 !== 'undefined') {
     return (dispatch) => {
+      dispatch(refundTicketActions.started());
       const ticketExchange = contract(TicketExchangeContract);
       ticketExchange.setProvider(web3.currentProvider);
       var ticketExchangeInstance;
@@ -207,6 +223,8 @@ export function refundTicket(ticketId) {
           });
         });
       }).then(() => {
+        dispatch(refundTicketActions.success());
+      }).then(() => {
         dispatch(fetchTickets(0));
       });
     };
@@ -214,7 +232,7 @@ export function refundTicket(ticketId) {
 }
 
 const initialState = {
-  // Update this to be object with status properties
+  // Update this to be fetched tickets and use selectors instead
   user: [],
   status: {
     created: [],
@@ -243,5 +261,6 @@ export default handleActions({
         user: ticketData
     };
   },
+  [fetchSuccess(SELL_TICKET)]: (state) => state
 }, initialState);
 

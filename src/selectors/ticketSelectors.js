@@ -26,3 +26,24 @@ export const userSoldTickets = createSelector(
     ticket.status === convertStatus('sold') && ticket.user.username === username
   )
 )
+
+export const userRefundedTickets = createSelector(
+  userTickets,
+  username,
+  (tickets, username) => tickets.filter((ticket) => 
+    ticket.status === convertStatus('refunded'))
+)
+
+export const userCompleteTickets = createSelector(
+  userTickets,
+  username,
+  (tickets, username) => tickets.filter((ticket) => 
+    ticket.status === convertStatus('complete'))
+)
+
+export const userCancelledTickets = createSelector(
+  userTickets,
+  username,
+  (tickets, username) => tickets.filter((ticket) => 
+    ticket.status === convertStatus('cancelled'))
+)

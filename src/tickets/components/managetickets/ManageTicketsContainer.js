@@ -1,6 +1,14 @@
 import { connect } from 'react-redux';
 import ManageTickets from './ManageTickets';
-import { userSellingTickets, userBoughtTickets, userSoldTickets } from '../../../selectors/ticketSelectors';
+import { 
+  userSellingTickets, 
+  userBoughtTickets, 
+  userSoldTickets, 
+  userRefundedTickets, 
+  userCompleteTickets,
+  userCancelledTickets,
+} from '../../../selectors/ticketSelectors';
+import { confirmTicket, refundTicket } from '../../../redux/ticket';
 // import { buyTicket } from '../../../redux/ticket.js';
 
 const mapStateToProps = (state) => {
@@ -8,11 +16,15 @@ const mapStateToProps = (state) => {
     sellingTickets: userSellingTickets(state),
     boughtTickets: userBoughtTickets(state),
     soldTickets: userSoldTickets(state),
+    refundedTickets: userRefundedTickets(state),
+    completeTickets: userCompleteTickets(state),
+    cancelledTickets: userCancelledTickets(state)
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  // onBuyTicket: (ticketId, price) => dispatch(buyTicket(ticketId, price)),
+  onConfirmTicket: (ticketId) => dispatch(confirmTicket(ticketId)),
+  onRefundTicket: (ticketId) => dispatch(refundTicket(ticketId)),
 });
 
 const ManageTicketContainer = connect(
